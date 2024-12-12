@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Optional for custom fonts
+import '../HomePage/MainHomepage.dart';
 
 class IntroPage extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class IntroPage extends StatelessWidget {
         width: double.infinity, // Ensure the container takes the full width
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.green.shade300, Colors.green.shade700],
+            colors: [Colors.green.shade500, Colors.green.shade100],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -47,9 +48,14 @@ class IntroPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
+              Image.asset(
+                'assets/Images/IntroPage.png',
+                width: 300,
+              ),
+              SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home'); // Change '/home' to your main route
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainHomePage())); 
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orangeAccent,
