@@ -15,20 +15,36 @@ class CategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-      body: ListView.builder(
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              title: Text(categories[index]['title']!),
-              subtitle: Text(categories[index]['caption']!),
-            ),
-          );
-        },
-      ),
-    );
+        return Scaffold(
+          body: ListView.builder(
+            itemCount: categories.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Card(
+                  elevation: 2,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        categories[index]['title']!,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    subtitle: Text(
+                      categories[index]['caption']!,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
   }
 }
 
