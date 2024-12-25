@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/category_provider.dart';
 import './Pages/IntroPage/Firstpage.dart';
+import './providers/pantry_provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
+        ChangeNotifierProvider(create: (_) => PantryProvider()),
       ],
       child: const MyApp(),
     ),
