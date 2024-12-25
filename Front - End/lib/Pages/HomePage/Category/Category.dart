@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/category_provider.dart';
 import '../Products/pantry.dart';
+import '../Products/vegetables.dart';
 
 class CategoryPage extends StatelessWidget {
   @override
@@ -21,6 +22,12 @@ class CategoryPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const PantryPage()),
+                  );
+                } else if (category.title == 'Fresh Produce') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VegetablesPage()),
                   );
                 }
               },
