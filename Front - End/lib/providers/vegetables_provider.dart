@@ -4,34 +4,34 @@ import '../models/vegetables_model.dart';
 class VegetablesProvider with ChangeNotifier {
   final List<VegetableItem> _items = [
     VegetableItem(
-      name: 'Rice',
+      name: 'Broccoli',
       price: 19.99,
-      imageUrl: 'assets/images/pantry/rice.jpeg',
+      imageUrl: 'assets/images/vegetables/broccoli.jpg',
     ),
     VegetableItem(
-      name: 'Pasta',
+      name: 'Carrot',
       price: 4.99, 
-      imageUrl: 'assets/Images/pantry/pasta.jpg',
+      imageUrl: 'assets/Images/vegetables/carrot.webp',
     ),
     VegetableItem(
-      name: 'Flour',
+      name: 'Garlic',
       price: 3.99,
-      imageUrl: 'assets/Images/pantry/flour.jpg',
+      imageUrl: 'assets/Images/vegetables/garlic.webp',
     ),
     VegetableItem(
-      name: 'Sugar',
+      name: 'Leeks',
       price: 2.99,
-      imageUrl: 'assets/Images/pantry/sugar.jpeg',
+      imageUrl: 'assets/Images/vegetables/leeks.jpg',
     ),
     VegetableItem(
-      name: 'Salt',
+      name: 'Onion',
       price: 1.99,
-      imageUrl: 'assets/Images/pantry/salt.jpg',
+      imageUrl: 'assets/Images/vegetables/onion.jpg',
     ),
     VegetableItem(
-      name: 'Oats',
+      name: 'Potato',
       price: 7.99,
-      imageUrl: 'assets/Images/pantry/oats.webp',
+      imageUrl: 'assets/Images/vegetables/potato.jpg',
     ),
   ];
 
