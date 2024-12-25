@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import './Pages/IntroPage/Firstpage.dart'; 
+import 'package:provider/provider.dart';
+import './providers/category_provider.dart';
+import './Pages/IntroPage/Firstpage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,13 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'RF Stores',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: IntroPage(), // Set IntroPage as the home
-      debugShowCheckedModeBanner: false, // Remove the debug banner
+      home: IntroPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
