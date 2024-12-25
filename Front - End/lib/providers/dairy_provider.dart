@@ -4,34 +4,34 @@ import '../models/dairy_model.dart';
 class DairyProvider with ChangeNotifier {
   final List<DairyItem> _items = [
     DairyItem(
-      name: 'Broccoli',
+      name: 'Butter',
       price: 19.99,
-      imageUrl: 'assets/images/vegetables/broccoli.jpg',
+      imageUrl: 'assets/images/dairy&eggs/butter.jpg',
     ),
     DairyItem(
-      name: 'Carrot',
+      name: 'Cheese',
       price: 4.99, 
-      imageUrl: 'assets/Images/vegetables/carrot.webp',
+      imageUrl: 'assets/Images/dairy&eggs/cheese.jpg',
     ),
     DairyItem(
-      name: 'Garlic',
+      name: 'Egg',
       price: 3.99,
-      imageUrl: 'assets/Images/vegetables/garlic.webp',
+      imageUrl: 'assets/Images/dairy&eggs/eggs.webp',
     ),
     DairyItem(
-      name: 'Leeks',
+      name: 'Ghee',
       price: 2.99,
-      imageUrl: 'assets/Images/vegetables/leeks.jpg',
+      imageUrl: 'assets/Images/dairy&eggs/ghee.jpeg',
     ),
     DairyItem(
-      name: 'Onion',
+      name: 'Milk',
       price: 1.99,
-      imageUrl: 'assets/Images/vegetables/onion.jpg',
+      imageUrl: 'assets/Images/dairy&eggs/milk.jpeg',
     ),
     DairyItem(
-      name: 'Potato',
+      name: 'Yoghurt',
       price: 7.99,
-      imageUrl: 'assets/Images/vegetables/potato.jpg',
+      imageUrl: 'assets/Images/dairy&eggs/yoghurt.png',
     ),
   ];
 
