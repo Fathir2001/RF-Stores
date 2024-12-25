@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/category_provider.dart';
 import '../Products/pantry.dart';
 import '../Products/vegetables.dart';
+import '../Products/dairy.dart';
 
 class CategoryPage extends StatelessWidget {
   @override
@@ -28,6 +29,12 @@ class CategoryPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const VegetablesPage()),
+                  );
+                } else if (category.title == 'Dairy and Eggs') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DairyPage()),
                   );
                 }
               },

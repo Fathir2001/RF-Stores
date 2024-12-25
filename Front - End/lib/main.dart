@@ -4,6 +4,7 @@ import './providers/category_provider.dart';
 import './Pages/IntroPage/Firstpage.dart';
 import './providers/pantry_provider.dart';
 import './providers/vegetables_provider.dart';
+import './providers/dairy_provider.dart';
 
 void main() {
   runApp(
@@ -12,6 +13,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => PantryProvider()),
         ChangeNotifierProvider(create: (_) => VegetablesProvider()),
+        ChangeNotifierProvider(create: (_) => DairyProvider()),
       ],
       child: const MyApp(),
     ),
