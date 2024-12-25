@@ -11,13 +11,13 @@ class _MainHomePageState extends State<MainHomePage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     Text('Home Page Content'),
-    Text('Search Page Content'),
+    // Text('Search Page Content'),
     CategoryPage(), // Include the CategoryPage widget
   ];
 
   static final List<String> _titles = <String>[
     'Home',
-    'Search',
+    // 'Search',
     'Categories',
   ];
 
@@ -43,10 +43,10 @@ class _MainHomePageState extends State<MainHomePage> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.search),
+          //   label: 'Search',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.category),
             label: 'Category',
