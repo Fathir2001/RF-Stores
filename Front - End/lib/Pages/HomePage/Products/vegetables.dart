@@ -11,7 +11,13 @@ class VegetablesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text('Fresh Vegetables'),
+        centerTitle: true,
         elevation: 0,
         actions: [
           IconButton(
@@ -25,6 +31,7 @@ class VegetablesPage extends StatelessWidget {
           ),
         ],
       ),
+      
       body: Consumer<VegetablesProvider>(
         builder: (context, vegetablesProvider, child) {
           return GridView.builder(

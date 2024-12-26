@@ -11,7 +11,13 @@ class DairyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text('Dairy Products'),
+        centerTitle: true,
         elevation: 0,
         actions: [
           IconButton(
@@ -23,8 +29,9 @@ class DairyPage extends StatelessWidget {
             },
             icon: const Icon(Icons.shopping_cart),
           ),
-        ],
+        ], 
       ),
+      
       body: Consumer<DairyProvider>(
         builder: (context, dairyProvider, child) {
           return GridView.builder(

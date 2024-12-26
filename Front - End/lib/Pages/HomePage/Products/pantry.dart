@@ -11,7 +11,13 @@ class PantryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text('Pantry Staples'),
+        centerTitle: true,
         elevation: 0,
         actions: [
           IconButton(
@@ -25,6 +31,8 @@ class PantryPage extends StatelessWidget {
           ),
         ],
       ),
+      
+    
       body: Consumer<PantryProvider>(
         builder: (context, pantryProvider, child) {
           return GridView.builder(

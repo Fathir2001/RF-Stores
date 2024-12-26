@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import './Category/Category.dart';
-import './AddToCart/cart.dart';
+// import './AddToCart/cart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import './Products/dairy.dart';
+import './Products/pantry.dart';
+import './Products/vegetables.dart';
 
 class MainHomePage extends StatefulWidget {
   @override
@@ -15,14 +18,9 @@ class _MainHomePageState extends State<MainHomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeContent(),
     CategoryPage(),
-    CartPage(),
+    // CartPage(),
   ];
 
-  static final List<String> _titles = <String>[
-    'RF Stores',
-    'Categories',
-    'Cart',
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -34,18 +32,39 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text(_titles[_selectedIndex]),
-        centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.notifications),
-        //     onPressed: () {},
-        //   ),
-        // ],
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.only(top: 5, bottom: 0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Text(
+              'R.F STORES',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+                letterSpacing: 2,
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+        ],
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -56,10 +75,10 @@ class _MainHomePageState extends State<MainHomePage> {
             icon: Icon(Icons.category),
             label: 'Category',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.shopping_cart),
+          //   label: 'Cart',
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.green,
@@ -150,9 +169,33 @@ class HomeContent extends StatelessWidget {
                     child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildCategoryCard('Pantry', Icons.kitchen),
-                      _buildCategoryCard('Vegetables', Icons.eco),
-                      _buildCategoryCard('Dairy', Icons.egg),
+                      GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PantryPage()),
+                        );
+                      },
+                      child: _buildCategoryCard('Pantry', Icons.kitchen),
+                      ),
+                      GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => VegetablesPage()),
+                        );
+                      },
+                      child: _buildCategoryCard('Vegetables', Icons.eco),
+                      ),
+                      GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DairyPage()),
+                        );
+                      },
+                      child: _buildCategoryCard('Dairy', Icons.egg),
+                      ),
                     ],
                     ),
                 ),
