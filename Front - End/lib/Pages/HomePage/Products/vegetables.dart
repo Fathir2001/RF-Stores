@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/vegetables_provider.dart';
+import '../../../providers/cart_providers.dart';
+import '../AddToCart/cart.dart';
 
 class VegetablesPage extends StatelessWidget {
   const VegetablesPage({Key? key}) : super(key: key);
@@ -14,7 +16,10 @@ class VegetablesPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartPage()),
+              );
             },
             icon: const Icon(Icons.shopping_cart),
           ),
@@ -30,6 +35,7 @@ class VegetablesPage extends StatelessWidget {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
+            itemCount: vegetablesProvider.items.length,
             itemBuilder: (context, index) {
               final item = vegetablesProvider.items[index];
               return Card(
@@ -56,7 +62,16 @@ class VegetablesPage extends StatelessWidget {
                             right: 8,
                             child: FloatingActionButton.small(
                               onPressed: () {
-                                vegetablesProvider.addToCart(item);
+                                final cartProvider = Provider.of<CartProvider>(
+                                  context,
+                                  listen: false,
+                                );
+                                cartProvider.addItem(
+                                  item.name,
+                                  item.name,
+                                  item.price,
+                                  item.imageUrl,
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('${item.name} added to cart'),
@@ -91,7 +106,6 @@ class VegetablesPage extends StatelessWidget {
                 ),
               );
             },
-            itemCount: vegetablesProvider.items.length,
           );
         },
       ),

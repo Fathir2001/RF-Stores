@@ -36,11 +36,4 @@ class DairyProvider with ChangeNotifier {
   ];
 
   List<DairyItem> get items => [..._items];
-  final List<DairyItem> _cartItems = [];
-  List<DairyItem> get cartItems => [..._cartItems];
-
-  void addToCart(DairyItem item) {
-    _cartItems.add(item);
-    notifyListeners();
-  }
 }

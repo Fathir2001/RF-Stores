@@ -36,11 +36,5 @@ class VegetablesProvider with ChangeNotifier {
   ];
 
   List<VegetableItem> get items => [..._items];
-  final List<VegetableItem> _cartItems = [];
-  List<VegetableItem> get cartItems => [..._cartItems];
-
-  void addToCart(VegetableItem item) {
-    _cartItems.add(item);
-    notifyListeners();
-  }
+  
 }

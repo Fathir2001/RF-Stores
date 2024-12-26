@@ -36,11 +36,5 @@ class PantryProvider with ChangeNotifier {
   ];
 
   List<PantryItem> get items => [..._items];
-  final List<PantryItem> _cartItems = [];
-  List<PantryItem> get cartItems => [..._cartItems];
-
-  void addToCart(PantryItem item) {
-    _cartItems.add(item);
-    notifyListeners();
-  }
+  
 }

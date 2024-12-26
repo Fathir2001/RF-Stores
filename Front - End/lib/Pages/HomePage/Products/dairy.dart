@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/dairy_provider.dart';
+import '../../../providers/cart_providers.dart';
+import '../AddToCart/cart.dart';
 
 class DairyPage extends StatelessWidget {
   const DairyPage({Key? key}) : super(key: key);
@@ -14,7 +16,10 @@ class DairyPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartPage()),
+              );
             },
             icon: const Icon(Icons.shopping_cart),
           ),
@@ -56,7 +61,16 @@ class DairyPage extends StatelessWidget {
                             right: 8,
                             child: FloatingActionButton.small(
                               onPressed: () {
-                                dairyProvider.addToCart(item);
+                                final cartProvider = Provider.of<CartProvider>(
+                                  context,
+                                  listen: false,
+                                );
+                                cartProvider.addItem(
+                                  item.name, // Using name as ID
+                                  item.name,
+                                  item.price,
+                                  item.imageUrl,
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('${item.name} added to cart'),
