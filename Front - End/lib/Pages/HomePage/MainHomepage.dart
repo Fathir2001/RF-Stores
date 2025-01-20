@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import './Category/Category.dart';
-// import './AddToCart/cart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import './Products/dairy.dart';
 import './Products/pantry.dart';
 import './Products/vegetables.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:animate_do/animate_do.dart';
 
 class MainHomePage extends StatefulWidget {
   @override
@@ -19,7 +19,6 @@ class _MainHomePageState extends State<MainHomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeContent(),
     CategoryPage(),
-    // CartPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,50 +33,56 @@ class _MainHomePageState extends State<MainHomePage> {
       key: _scaffoldKey,
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 2),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.white.withOpacity(0.3),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 5),
-                  child: Image.asset(
-                    'assets/Images/Logo.png', // Make sure this image exists in your assets
-                    height: 80,
-                    width: 80,
+          FadeInDown(
+            duration: Duration(milliseconds: 500),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
                   ),
-                ),
-                Expanded(
-                  child: Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(255, 41, 133, 44),
-                    highlightColor: const Color.fromARGB(255, 146, 243, 196),
-                    period: Duration(seconds: 2),
-                    child: Text(
-                      'R.F STORES',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                        letterSpacing: 2,
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Hero(
+                      tag: 'logo',
+                      child: Image.asset(
+                        'assets/Images/Logo.png',
+                        height: 80,
+                        width: 80,
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Shimmer.fromColors(
+                      baseColor: const Color.fromARGB(255, 41, 133, 44),
+                      highlightColor: const Color.fromARGB(255, 146, 243, 196),
+                      period: Duration(seconds: 2),
+                      child: Text(
+                        'R.F STORES',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(height: 10),
@@ -86,24 +91,37 @@ class _MainHomePageState extends State<MainHomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: FadeInUp(
+        duration: Duration(milliseconds: 500),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 0,
+                blurRadius: 10,
+                offset: Offset(0, -3),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Category',
+          child: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.category),
+                label: 'Category',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.green,
+            unselectedItemColor: Colors.grey,
+            onTap: _onItemTapped,
+            elevation: 0,
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.shopping_cart),
-          //   label: 'Cart',
-          // ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }
@@ -119,55 +137,49 @@ class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search Bar
-          // Padding(
-          //   padding: EdgeInsets.all(16.0),
-          //   child: TextField(
-          //     decoration: InputDecoration(
-          //       hintText: 'Search products...',
-          //       prefixIcon: Icon(Icons.search),
-          //       border: OutlineInputBorder(
-          //         borderRadius: BorderRadius.circular(25.0),
-          //       ),
-          //       filled: true,
-          //       fillColor: Colors.grey[200],
-          //     ),
-          //   ),
-          // ),
-
-          // Banner Carousel
-
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 180.0,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              aspectRatio: 16 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8,
-            ),
-            items: bannerImages.map((imagePath) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage(imagePath),
-                        fit: BoxFit.cover,
+          FadeInDown(
+            duration: Duration(milliseconds: 800),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 180.0,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.easeInOut,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+              ),
+              items: bannerImages.map((imagePath) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 0,
+                            blurRadius: 10,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                        image: DecorationImage(
+                          image: AssetImage(imagePath),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
           ),
 
           // Categories Section
@@ -176,48 +188,38 @@ class HomeContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Categories',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                FadeInLeft(
+                  duration: Duration(milliseconds: 500),
+                  child: Text(
+                    'Categories',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PantryPage()),
-                          );
-                        },
-                        child: _buildCategoryCard('Pantry', Icons.kitchen),
+                      FadeInLeft(
+                        duration: Duration(milliseconds: 600),
+                        child: _buildEnhancedCategoryCard(
+                            context, 'Pantry', Icons.kitchen, PantryPage()),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => VegetablesPage()),
-                          );
-                        },
-                        child: _buildCategoryCard('Vegetables', Icons.eco),
+                      FadeInLeft(
+                        duration: Duration(milliseconds: 700),
+                        child: _buildEnhancedCategoryCard(
+                            context, 'Vegetables', Icons.eco, VegetablesPage()),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DairyPage()),
-                          );
-                        },
-                        child: _buildCategoryCard('Dairy', Icons.egg),
+                      FadeInLeft(
+                        duration: Duration(milliseconds: 800),
+                        child: _buildEnhancedCategoryCard(
+                            context, 'Dairy', Icons.egg, DairyPage()),
                       ),
                     ],
                   ),
@@ -232,30 +234,62 @@ class HomeContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Special Offers',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                FadeInLeft(
+                  duration: Duration(milliseconds: 500),
+                  child: Text(
+                    'Special Offers',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 GridView.count(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15,
                   childAspectRatio: 0.8,
                   children: [
-                    _buildProductCard('Fresh Apples', '2.99', '3.99', '25% OFF',
-                        'assets/Images/HomePage/apples.jpg'),
-                    _buildProductCard('Bananas', '1.99', '2.49', '20% OFF',
-                        'assets/Images/HomePage/bananas.jpg'),
-                    _buildProductCard('Orange Pack', '4.99', '5.99', '15% OFF',
-                        'assets/Images/HomePage/oranges.jpg'),
-                    _buildProductCard('Mixed Berries', '6.99', '8.99',
-                        '30% OFF', 'assets/Images/HomePage/berries.webp'),
+                    FadeInUp(
+                      duration: Duration(milliseconds: 600),
+                      child: _buildEnhancedProductCard(
+                          'Fresh Apples',
+                          '2.99',
+                          '3.99',
+                          '25% OFF',
+                          'assets/Images/HomePage/apples.jpg'),
+                    ),
+                    FadeInUp(
+                      duration: Duration(milliseconds: 700),
+                      child: _buildEnhancedProductCard(
+                          'Bananas',
+                          '1.99',
+                          '2.49',
+                          '20% OFF',
+                          'assets/Images/HomePage/bananas.jpg'),
+                    ),
+                    FadeInUp(
+                      duration: Duration(milliseconds: 800),
+                      child: _buildEnhancedProductCard(
+                          'Orange Pack',
+                          '4.99',
+                          '5.99',
+                          '15% OFF',
+                          'assets/Images/HomePage/oranges.jpg'),
+                    ),
+                    FadeInUp(
+                      duration: Duration(milliseconds: 900),
+                      child: _buildEnhancedProductCard(
+                          'Mixed Berries',
+                          '6.99',
+                          '8.99',
+                          '30% OFF',
+                          'assets/Images/HomePage/berries.webp'),
+                    ),
                   ],
                 ),
               ],
@@ -266,89 +300,149 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryCard(String title, IconData icon) {
+  Widget _buildEnhancedCategoryCard(
+      BuildContext context, String title, IconData icon, Widget page) {
     return Container(
-      width: 100,
-      margin: EdgeInsets.only(right: 10),
-      child: Card(
-        elevation: 3,
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 30, color: Colors.green),
-              SizedBox(height: 5),
-              Text(
-                title,
-                style: TextStyle(fontSize: 12),
-                textAlign: TextAlign.center,
+      width: 110,
+      margin: EdgeInsets.only(right: 15),
+      child: Material(
+        elevation: 8,
+        shadowColor: Colors.green.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(15),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => page),
+            );
+          },
+          borderRadius: BorderRadius.circular(15),
+          child: Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.green[300]!, Colors.green[600]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-            ],
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 35, color: Colors.white),
+                SizedBox(height: 8),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildProductCard(String name, String price, String oldPrice,
+  Widget _buildEnhancedProductCard(String name, String price, String oldPrice,
       String discount, String imagePath) {
-    return Card(
-      elevation: 3,
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: AssetImage(imagePath),
-                      fit: BoxFit.cover,
+            Expanded(
+              flex: 3,
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
+                  Positioned(
+                    top: 10,
+                    left: 0,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                      ),
+                      child: Text(
+                        discount,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                   ),
-                  child: Text(
-                    discount,
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-            SizedBox(height: 8),
-            Text(
-              name,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              children: [
-                Text(
-                  '\$$price',
-                  style: TextStyle(color: Colors.green, fontSize: 16),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      name,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '\$$price',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          '\$$oldPrice',
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(width: 5),
-                Text(
-                  '\$$oldPrice',
-                  style: TextStyle(
-                    decoration: TextDecoration.lineThrough,
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
