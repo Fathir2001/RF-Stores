@@ -12,8 +12,10 @@ class IntroPage extends StatefulWidget {
 
 class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _buttonController;
   late Animation<double> _logoAnimation;
   late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -34,11 +36,25 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
       ),
     );
 
+    _buttonController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _buttonController,
+      curve: Curves.easeInOut,
+    ));
+
     _controller.forward();
   }
 
   @override
   void dispose() {
+    _buttonController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -152,46 +168,48 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
 
                   // Get Started Button
                   Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    MainHomePage(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: Duration(milliseconds: 800),
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 32),
+                      child: ScaleTransition(
+                        scale: _scaleAnimation,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        MainHomePage(),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: Duration(milliseconds: 800),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 8,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          child: Text(
+                            'Get Started',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF43A047),
+                            ),
+                          ),
                         ),
-                        elevation: 8,
-                      ),
-                      child: Text(
-                        'Get Started',
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF43A047),
-                        ),
-                      ),
-                    ),
-                  ),
+                      )),
                   SizedBox(height: 20),
                 ],
               ),
@@ -210,14 +228,14 @@ class ShimmerText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.white,
+      baseColor: const Color.fromARGB(255, 0,0,0),
       highlightColor: Colors.white.withOpacity(0.5),
       child: Text(
         text,
         style: GoogleFonts.poppins(
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 1.5,
+          fontSize: 28,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 4.0,
         ),
       ),
     );
