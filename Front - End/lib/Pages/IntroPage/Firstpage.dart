@@ -16,6 +16,8 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
   late Animation<double> _logoAnimation;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  late AnimationController _slideController;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
@@ -49,11 +51,25 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     ));
 
+    _slideController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(2.0, 0.0), // Slide to right by 2x screen width
+    ).animate(CurvedAnimation(
+      parent: _slideController,
+      curve: Curves.easeInOut,
+    ));
+
     _controller.forward();
   }
 
   @override
   void dispose() {
+    _slideController.dispose();
     _buttonController.dispose();
     _controller.dispose();
     super.dispose();
@@ -152,12 +168,16 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                           children: [
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Image.asset(
-                                'assets/Images/IntroPage.png',
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                                fit: BoxFit.contain,
+                              child: SlideTransition(
+                                position: _slideAnimation,
+                                child: Image.asset(
+                                  'assets/Images/IntroPage.png',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
                           ],
@@ -173,7 +193,8 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                       child: ScaleTransition(
                         scale: _scaleAnimation,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            await _slideController.forward();
                             Navigator.push(
                               context,
                               PageRouteBuilder(
@@ -228,7 +249,7 @@ class ShimmerText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(255, 0,0,0),
+      baseColor: const Color.fromARGB(255, 0, 0, 0),
       highlightColor: Colors.white.withOpacity(0.5),
       child: Text(
         text,
