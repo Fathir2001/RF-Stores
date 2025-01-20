@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import './Products/dairy.dart';
 import './Products/pantry.dart';
 import './Products/vegetables.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MainHomePage extends StatefulWidget {
   @override
@@ -21,7 +22,6 @@ class _MainHomePageState extends State<MainHomePage> {
     // CartPage(),
   ];
 
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -36,7 +36,7 @@ class _MainHomePageState extends State<MainHomePage> {
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 5, bottom: 0),
+            padding: EdgeInsets.symmetric(vertical: 2),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -48,15 +48,36 @@ class _MainHomePageState extends State<MainHomePage> {
                 ),
               ],
             ),
-            child: Text(
-              'R.F STORES',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-                letterSpacing: 2,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Image.asset(
+                    'assets/Images/Logo.png', // Make sure this image exists in your assets
+                    height: 80,
+                    width: 80,
+                  ),
+                ),
+                Expanded(
+                  child: Shimmer.fromColors(
+                    baseColor: const Color.fromARGB(255, 41, 133, 44),
+                    highlightColor: const Color.fromARGB(255, 146, 243, 196),
+                    period: Duration(seconds: 2),
+                    child: Text(
+                      'R.F STORES',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 10),
@@ -118,14 +139,13 @@ class HomeContent extends StatelessWidget {
           // ),
 
           // Banner Carousel
-                    
-          
+
           CarouselSlider(
             options: CarouselOptions(
               height: 180.0,
               autoPlay: true,
               enlargeCenterPage: true,
-              aspectRatio: 16/9,
+              aspectRatio: 16 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 800),
@@ -166,38 +186,41 @@ class HomeContent extends StatelessWidget {
                 SizedBox(height: 10),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                    child: Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PantryPage()),
-                        );
-                      },
-                      child: _buildCategoryCard('Pantry', Icons.kitchen),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PantryPage()),
+                          );
+                        },
+                        child: _buildCategoryCard('Pantry', Icons.kitchen),
                       ),
                       GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => VegetablesPage()),
-                        );
-                      },
-                      child: _buildCategoryCard('Vegetables', Icons.eco),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VegetablesPage()),
+                          );
+                        },
+                        child: _buildCategoryCard('Vegetables', Icons.eco),
                       ),
                       GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DairyPage()),
-                        );
-                      },
-                      child: _buildCategoryCard('Dairy', Icons.egg),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DairyPage()),
+                          );
+                        },
+                        child: _buildCategoryCard('Dairy', Icons.egg),
                       ),
                     ],
-                    ),
+                  ),
                 ),
               ],
             ),
@@ -224,12 +247,16 @@ class HomeContent extends StatelessWidget {
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                   childAspectRatio: 0.8,
-                    children: [
-                    _buildProductCard('Fresh Apples', '2.99', '3.99', '25% OFF', 'assets/Images/HomePage/apples.jpg'),
-                    _buildProductCard('Bananas', '1.99', '2.49', '20% OFF', 'assets/Images/HomePage/bananas.jpg'),
-                    _buildProductCard('Orange Pack', '4.99', '5.99', '15% OFF', 'assets/Images/HomePage/oranges.jpg'),
-                    _buildProductCard('Mixed Berries', '6.99', '8.99', '30% OFF', 'assets/Images/HomePage/berries.webp'),
-                    ],
+                  children: [
+                    _buildProductCard('Fresh Apples', '2.99', '3.99', '25% OFF',
+                        'assets/Images/HomePage/apples.jpg'),
+                    _buildProductCard('Bananas', '1.99', '2.49', '20% OFF',
+                        'assets/Images/HomePage/bananas.jpg'),
+                    _buildProductCard('Orange Pack', '4.99', '5.99', '15% OFF',
+                        'assets/Images/HomePage/oranges.jpg'),
+                    _buildProductCard('Mixed Berries', '6.99', '8.99',
+                        '30% OFF', 'assets/Images/HomePage/berries.webp'),
+                  ],
                 ),
               ],
             ),
@@ -264,7 +291,8 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-    Widget _buildProductCard(String name, String price, String oldPrice, String discount, String imagePath) {
+  Widget _buildProductCard(String name, String price, String oldPrice,
+      String discount, String imagePath) {
     return Card(
       elevation: 3,
       child: Padding(

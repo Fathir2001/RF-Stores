@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import '../HomePage/MainHomepage.dart';
-import 'package:simple_animations/simple_animations.dart';
+// import 'package:simple_animations/simple_animations.dart';
 import 'dart:math' as math;
 
 class IntroPage extends StatefulWidget {
