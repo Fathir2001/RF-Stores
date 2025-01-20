@@ -48,15 +48,14 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
-          // Background design
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xFF81C784), // Soft green
-                    Color(0xFFA5D6A7), // Lighter green
-                    Color(0xFFFFF59D), // Pale yellow
+                    Color(0xFF81C784),
+                    Color(0xFFA5D6A7),
+                    Color(0xFFFFF59D),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -67,9 +66,6 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
               ),
             ),
           ),
-
-          // Foreground content
-                    
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -78,7 +74,8 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 20),
-                  // Animated logo
+
+                  // Logo animation
                   AnimatedBuilder(
                     animation: _controller,
                     builder: (context, child) {
@@ -97,7 +94,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                             ],
                           ),
                           child: Image.asset(
-                            'assets/Images/IntroPage.png',
+                            'assets/Images/Logo.png',
                             width: MediaQuery.of(context).size.width * 0.6,
                             fit: BoxFit.contain,
                           ),
@@ -105,30 +102,20 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                       );
                     },
                   ),
-          
-                  // Welcome text
+
+                  // Welcome text section
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ShimmerText('Welcome to'),
-                        SizedBox(height: 16),
-                        Text(
-                          'RF Stores',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            letterSpacing: 2,
-                          ),
-                        ),
+                        ShimmerText('WELCOME'),
                         SizedBox(height: 24),
                         Container(
                           width: double.infinity,
                           alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(20),
@@ -138,15 +125,31 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: const Color.fromARGB(255, 45, 143, 86),
                               letterSpacing: 0.5,
                             ),
                           ),
                         ),
+                        SizedBox(height: 24),
+                        // IntroPage image
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Image.asset(
+                                'assets/Images/IntroPage.png',
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.25,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-          
+
                   // Get Started Button
                   Container(
                     width: double.infinity,
@@ -156,10 +159,11 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) =>
-                                MainHomePage(),
-                            transitionsBuilder:
-                                (context, animation, secondaryAnimation, child) {
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    MainHomePage(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
@@ -171,7 +175,8 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -200,7 +205,6 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
 
 class ShimmerText extends StatelessWidget {
   final String text;
-
   ShimmerText(this.text);
 
   @override
@@ -220,13 +224,11 @@ class ShimmerText extends StatelessWidget {
   }
 }
 
-// Background Painter
 class BackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..isAntiAlias = true;
 
-    // Draw circular patterns
     paint.color = Color(0xFF43A047).withOpacity(0.15);
     canvas.drawCircle(Offset(size.width * 0.2, size.height * 0.2), 100, paint);
 
@@ -236,12 +238,29 @@ class BackgroundPainter extends CustomPainter {
     paint.color = Color(0xFF81C784).withOpacity(0.2);
     canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.8), 200, paint);
 
-    // Add subtle grocery-themed accents
     paint.color = Colors.white.withOpacity(0.05);
     for (int i = 0; i < 10; i++) {
       double dx = math.Random().nextDouble() * size.width;
       double dy = math.Random().nextDouble() * size.height;
       canvas.drawCircle(Offset(dx, dy), 8, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+class DashedLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    double dashWidth = 8, dashSpace = 4, startX = 0;
+    final paint = Paint()
+      ..color = const Color.fromARGB(255, 0, 0, 0)
+      ..strokeWidth = 2;
+
+    while (startX < size.width) {
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
+      startX += dashWidth + dashSpace;
     }
   }
 
