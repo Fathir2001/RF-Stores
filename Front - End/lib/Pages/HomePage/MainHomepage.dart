@@ -69,15 +69,27 @@ class _MainHomePageState extends State<MainHomePage> {
                       baseColor: const Color.fromARGB(255, 41, 133, 44),
                       highlightColor: const Color.fromARGB(255, 146, 243, 196),
                       period: Duration(seconds: 2),
-                      child: Text(
-                        'R.F STORES',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                          letterSpacing: 2,
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'R.F STORES',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                          Divider(
+                            height: 10,
+                            thickness: 3,
+                            indent: 100,
+                            endIndent: 100,
+                            color: Colors.green,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -95,31 +107,69 @@ class _MainHomePageState extends State<MainHomePage> {
         duration: Duration(milliseconds: 500),
         child: Container(
           decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Color.fromARGB(255, 240, 250, 240)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 0,
-                blurRadius: 10,
+                color: Colors.green.withOpacity(0.2),
+                spreadRadius: 3,
+                blurRadius: 15,
                 offset: Offset(0, -3),
               ),
             ],
           ),
           child: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: _selectedIndex == 0
+                        ? Colors.green.withOpacity(0.1)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.home, size: 28),
+                ),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.category),
+                icon: AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: _selectedIndex == 1
+                        ? Colors.green.withOpacity(0.1)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.category, size: 28),
+                ),
                 label: 'Category',
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.green,
-            unselectedItemColor: Colors.grey,
-            onTap: _onItemTapped,
+            selectedItemColor: Colors.green[800],
+            unselectedItemColor: Colors.grey[600],
+            selectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+            unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 12,
+            ),
+            backgroundColor: Colors.transparent,
             elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 14,
+            unselectedFontSize: 12,
+            iconSize: 28,
+            onTap: _onItemTapped,
           ),
         ),
       ),
@@ -385,7 +435,8 @@ class HomeContent extends StatelessWidget {
                     top: 10,
                     left: 0,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.only(
