@@ -42,45 +42,76 @@ class _PantryPageState extends State<PantryPage>
               secondary: const Color.fromARGB(255, 38, 159, 62),
             ),
       ),
-      child: Scaffold(
-        appBar: _buildAppBar(context),
-        body: Column(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              const Color(0xFFE8F5E9), // Light green
+              const Color(0xFFF1F8E9), // Very light green
+              Colors.white,
+            ],
+          ),
+        ),
+        child: Stack(
           children: [
-            _buildSearchBar(),
-            Expanded(
-              child: Consumer<PantryProvider>(
-                builder: (context, pantryProvider, child) {
-                  final filteredItems = pantryProvider.items
-                      .where((item) => item.name
-                          .toLowerCase()
-                          .contains(_searchQuery.toLowerCase()))
-                      .toList();
+            // Pattern overlay
+            Opacity(
+              opacity: 0.05,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://www.transparenttextures.com/patterns/food.png'),
+                    repeat: ImageRepeat.repeat,
+                  ),
+                ),
+              ),
+            ),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: _buildAppBar(context),
+              body: Column(
+                children: [
+                  _buildSearchBar(),
+                  Expanded(
+                    child: Consumer<PantryProvider>(
+                      builder: (context, pantryProvider, child) {
+                        final filteredItems = pantryProvider.items
+                            .where((item) => item.name
+                                .toLowerCase()
+                                .contains(_searchQuery.toLowerCase()))
+                            .toList();
 
-                  if (filteredItems.isEmpty) {
-                    return _buildEmptyState();
-                  }
+                        if (filteredItems.isEmpty) {
+                          return _buildEmptyState();
+                        }
 
-                  return AnimatedBuilder(
-                    animation: _controller,
-                    builder: (context, child) {
-                      return GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.75,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                        ),
-                        itemCount: filteredItems.length,
-                        itemBuilder: (context, index) {
-                          final item = filteredItems[index];
-                          return _buildProductCard(context, item, index);
-                        },
-                      );
-                    },
-                  );
-                },
+                        return AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) {
+                            return GridView.builder(
+                              padding: const EdgeInsets.all(16),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.75,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                              ),
+                              itemCount: filteredItems.length,
+                              itemBuilder: (context, index) {
+                                final item = filteredItems[index];
+                                return _buildProductCard(context, item, index);
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -162,7 +193,7 @@ class _PantryPageState extends State<PantryPage>
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: Colors.grey[200],
+          fillColor: Colors.white.withOpacity(0.9),
         ),
       ),
     );
