@@ -106,70 +106,81 @@ class _MainHomePageState extends State<MainHomePage> {
       bottomNavigationBar: FadeInUp(
         duration: Duration(milliseconds: 500),
         child: Container(
+          height: 60, // Decreased height
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Color.fromARGB(255, 240, 250, 240)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.green.withOpacity(0.2),
-                spreadRadius: 3,
-                blurRadius: 15,
-                offset: Offset(0, -3),
-              ),
-            ],
+        gradient: LinearGradient(
+          colors: [Colors.white, Color.fromARGB(255, 240, 250, 240)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.green.withOpacity(0.2),
+            spreadRadius: 3,
+            blurRadius: 15,
+            offset: Offset(0, -3),
           ),
-          child: BottomNavigationBar(
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: _selectedIndex == 0
-                        ? Colors.green.withOpacity(0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.home, size: 28),
-                ),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: _selectedIndex == 1
-                        ? Colors.green.withOpacity(0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.category, size: 28),
-                ),
-                label: 'Category',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.green[800],
-            unselectedItemColor: Colors.grey[600],
-            selectedLabelStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
+        ],
+          ),
+          child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        child: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+          icon: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: _selectedIndex == 0
+              ? Colors.green.withOpacity(0.1)
+              : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
             ),
-            unselectedLabelStyle: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 12,
+            child: Icon(Icons.home, size: 18),
+          ),
+          label: 'Home',
             ),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            type: BottomNavigationBarType.fixed,
-            selectedFontSize: 14,
-            unselectedFontSize: 12,
-            iconSize: 28,
-            onTap: _onItemTapped,
+            BottomNavigationBarItem(
+          icon: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: _selectedIndex == 1
+              ? Colors.green.withOpacity(0.1)
+              : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.category, size: 18),
+          ),
+          label: 'Category',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green[800],
+          unselectedItemColor: Colors.grey[600],
+          selectedLabelStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 10,
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12,
+          unselectedFontSize: 10,
+          iconSize: 18,
+          onTap: _onItemTapped,
+        ),
           ),
         ),
       ),
