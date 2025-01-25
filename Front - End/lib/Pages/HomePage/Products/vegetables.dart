@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/vegetables_provider.dart';
 import '../../../providers/cart_providers.dart';
 import '../AddToCart/cart.dart';
+import 'package:shimmer/shimmer.dart';
 
 class VegetablesPage extends StatefulWidget {
   const VegetablesPage({Key? key}) : super(key: key);
@@ -92,11 +93,16 @@ class _VegetablesPageState extends State<VegetablesPage> with SingleTickerProvid
         icon: const Icon(Icons.arrow_back, color: Colors.black87),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: Text(
-        'Fresh Vegetables',
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
+      title: Shimmer.fromColors(
+        baseColor: const Color.fromARGB(255, 41, 133, 44),
+        highlightColor: const Color.fromARGB(255, 146, 243, 196),
+        period: const Duration(seconds: 2),
+        child: Text(
+          'Fresh Vegetables',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
         ),
       ),
       centerTitle: true,
