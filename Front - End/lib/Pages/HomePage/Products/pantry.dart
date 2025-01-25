@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
+// import 'package:shimmer/shimmer.dart';
 import '../../../providers/pantry_provider.dart';
 import '../../../providers/cart_providers.dart';
 import '../AddToCart/cart.dart';
