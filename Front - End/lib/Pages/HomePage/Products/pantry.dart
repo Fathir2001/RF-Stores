@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:shimmer/shimmer.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../providers/pantry_provider.dart';
 import '../../../providers/cart_providers.dart';
 import '../AddToCart/cart.dart';
@@ -12,10 +12,11 @@ class PantryPage extends StatefulWidget {
   State<PantryPage> createState() => _PantryPageState();
 }
 
-class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateMixin {
+class _PantryPageState extends State<PantryPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   String _searchQuery = '';
-  
+
   @override
   void initState() {
     super.initState();
@@ -37,9 +38,9 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
     return Theme(
       data: Theme.of(context).copyWith(
         colorScheme: Theme.of(context).colorScheme.copyWith(
-          primary: const Color.fromARGB(255, 58, 183, 110),
-          secondary: const Color.fromARGB(255, 38, 159, 62),
-        ),
+              primary: const Color.fromARGB(255, 58, 183, 110),
+              secondary: const Color.fromARGB(255, 38, 159, 62),
+            ),
       ),
       child: Scaffold(
         appBar: _buildAppBar(context),
@@ -50,7 +51,9 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
               child: Consumer<PantryProvider>(
                 builder: (context, pantryProvider, child) {
                   final filteredItems = pantryProvider.items
-                      .where((item) => item.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+                      .where((item) => item.name
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase()))
                       .toList();
 
                   if (filteredItems.isEmpty) {
@@ -62,7 +65,8 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
                     builder: (context, child) {
                       return GridView.builder(
                         padding: const EdgeInsets.all(16),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 0.75,
                           crossAxisSpacing: 16,
@@ -93,11 +97,16 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
         icon: const Icon(Icons.arrow_back, color: Colors.black87),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: Text(
-        'Pantry Staples',
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
+      title: Shimmer.fromColors(
+        baseColor: const Color.fromARGB(255, 41, 133, 44),
+        highlightColor: const Color.fromARGB(255, 146, 243, 196),
+        period: const Duration(seconds: 2),
+        child: Text(
+          'Pantry Staples',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
         ),
       ),
       centerTitle: true,
@@ -215,8 +224,8 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
                   Text(
                     item.name,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -224,9 +233,9 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
                   Text(
                     '\$${item.price.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
@@ -251,8 +260,8 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
           Text(
             'No items found',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey[600],
-            ),
+                  color: Colors.grey[600],
+                ),
           ),
         ],
       ),
@@ -267,7 +276,7 @@ class _PantryPageState extends State<PantryPage> with SingleTickerProviderStateM
       item.price,
       item.imageUrl,
     );
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${item.name} added to cart'),
