@@ -6,6 +6,7 @@ import './Products/pantry.dart';
 import './Products/vegetables.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:animate_do/animate_do.dart';
+import './Login/login.dart';
 
 class MainHomePage extends StatefulWidget {
   @override
@@ -50,7 +51,8 @@ class _MainHomePageState extends State<MainHomePage> {
                 ],
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween, // Changed to spaceBetween
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
@@ -59,7 +61,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       tag: 'logo',
                       child: Image.asset(
                         'assets/Images/Logo.png',
-                        height: 80,
+                        height: 60,
                         width: 80,
                       ),
                     ),
@@ -76,27 +78,49 @@ class _MainHomePageState extends State<MainHomePage> {
                             'R.F STORES',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 40,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold,
                               color: Colors.green,
                               letterSpacing: 2,
                             ),
                           ),
-                          Divider(
-                            height: 10,
-                            thickness: 3,
-                            indent: 100,
-                            endIndent: 100,
-                            color: Colors.green,
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: Divider(
+                              height: 2,
+                              thickness: 4,
+                              indent: 50,
+                              endIndent: 50,
+                              color: Colors.green[800],
+                            ),
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.green[800],
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
             ),
           ),
+
+          
           SizedBox(height: 10),
           Expanded(
             child: _widgetOptions.elementAt(_selectedIndex),
@@ -108,79 +132,79 @@ class _MainHomePageState extends State<MainHomePage> {
         child: Container(
           height: 60, // Decreased height
           decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.white, Color.fromARGB(255, 240, 250, 240)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.green.withOpacity(0.2),
-            spreadRadius: 3,
-            blurRadius: 15,
-            offset: Offset(0, -3),
-          ),
-        ],
+            gradient: LinearGradient(
+              colors: [Colors.white, Color.fromARGB(255, 240, 250, 240)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.green.withOpacity(0.2),
+                spreadRadius: 3,
+                blurRadius: 15,
+                offset: Offset(0, -3),
+              ),
+            ],
           ),
           child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-          icon: AnimatedContainer(
-            duration: Duration(milliseconds: 200),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: _selectedIndex == 0
-              ? Colors.green.withOpacity(0.1)
-              : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
-            child: Icon(Icons.home, size: 18),
-          ),
-          label: 'Home',
+            child: BottomNavigationBar(
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: AnimatedContainer(
+                    duration: Duration(milliseconds: 200),
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: _selectedIndex == 0
+                          ? Colors.green.withOpacity(0.1)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(Icons.home, size: 18),
+                  ),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: AnimatedContainer(
+                    duration: Duration(milliseconds: 200),
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: _selectedIndex == 1
+                          ? Colors.green.withOpacity(0.1)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(Icons.category, size: 18),
+                  ),
+                  label: 'Category',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.green[800],
+              unselectedItemColor: Colors.grey[600],
+              selectedLabelStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 10,
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              type: BottomNavigationBarType.fixed,
+              selectedFontSize: 12,
+              unselectedFontSize: 10,
+              iconSize: 18,
+              onTap: _onItemTapped,
             ),
-            BottomNavigationBarItem(
-          icon: AnimatedContainer(
-            duration: Duration(milliseconds: 200),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: _selectedIndex == 1
-              ? Colors.green.withOpacity(0.1)
-              : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(Icons.category, size: 18),
-          ),
-          label: 'Category',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.green[800],
-          unselectedItemColor: Colors.grey[600],
-          selectedLabelStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
-          ),
-          unselectedLabelStyle: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 10,
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 12,
-          unselectedFontSize: 10,
-          iconSize: 18,
-          onTap: _onItemTapped,
-        ),
           ),
         ),
       ),
