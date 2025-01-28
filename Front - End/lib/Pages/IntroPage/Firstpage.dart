@@ -187,9 +187,13 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                   ),
 
                   // Get Started Button
-                  Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 32),
+                                   // Replace the Get Started Button section with this code:
+                  
+                  // Get Started Button
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 400),
                       child: ScaleTransition(
                         scale: _scaleAnimation,
                         child: ElevatedButton(
@@ -198,11 +202,10 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                             Navigator.push(
                               context,
                               PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        MainHomePage(),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
+                                pageBuilder: (context, animation, secondaryAnimation) =>
+                                    MainHomePage(),
+                                transitionsBuilder:
+                                    (context, animation, secondaryAnimation, child) {
                                   return FadeTransition(
                                     opacity: animation,
                                     child: child,
@@ -215,23 +218,30 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 20),
+                              horizontal: MediaQuery.of(context).size.width < 360 ? 20 : 40,
+                              vertical: MediaQuery.of(context).size.width < 360 ? 15 : 20,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                             elevation: 8,
                           ),
-                          child: Text(
-                            'Get Started',
-                            style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF43A047),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Get Started',
+                              style: GoogleFonts.poppins(
+                                fontSize: MediaQuery.of(context).size.width < 360 ? 16 : 20,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF43A047),
+                              ),
                             ),
                           ),
                         ),
-                      )),
-                  SizedBox(height: 20),
+                      ),
+                    ),
+                  )
+                  // SizedBox(height: 20),
                 ],
               ),
             ),
