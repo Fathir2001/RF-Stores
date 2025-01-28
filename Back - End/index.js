@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const authRoutes = require('./routes/Auth');
 
 const app = express();
 
@@ -12,7 +13,10 @@ app.use(express.json());
 // Enhanced MongoDB connection
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
@@ -45,3 +49,5 @@ process.on("unhandledRejection", (err) => {
   console.error("Unhandled Rejection:", err);
   server.close(() => process.exit(1));
 });
+
+app.use('/api/auth', authRoutes);

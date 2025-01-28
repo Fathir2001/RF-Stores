@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,6 +14,40 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
+
+
+  Future<void> loginUser() async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:5000/api/auth/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        }),
+      );
+  
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        // Store token
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', data['token']);
+        
+        // Navigate to home page
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed. Please try again.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Network error. Please try again.')),
+      );
+    }
+  }
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                // Add login functionality
+                                loginUser();
                               }
                             },
                             style: ElevatedButton.styleFrom(
