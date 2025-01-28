@@ -58,11 +58,22 @@ class _LoginPageState extends State<LoginPage> {
                     delay: Duration(milliseconds: 200),
                     duration: Duration(milliseconds: 500),
                     child: Text(
-                      'Welcome Back',
+                      'Admin Login',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.green[800],
+                      ),
+                    ),
+                  ),
+                  FadeInDown(
+                    delay: Duration(milliseconds: 300),
+                    duration: Duration(milliseconds: 500),
+                    child: Text(
+                      'Authorized Personnel Only',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[600],
                       ),
                     ),
                   ),
@@ -77,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: TextFormField(
                             controller: _emailController,
                             decoration: InputDecoration(
-                              labelText: 'Email',
+                              labelText: 'Admin Email',
                               prefixIcon:
                                   Icon(Icons.email, color: Colors.green),
                               border: OutlineInputBorder(
@@ -142,23 +153,23 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        FadeInDown(
-                          delay: Duration(milliseconds: 800),
-                          duration: Duration(milliseconds: 500),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
-                                // Add forgot password functionality
-                              },
-                              child: Text(
-                                'Forgot Password?',
-                                style: TextStyle(color: Colors.green[800]),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
+                        // FadeInDown(
+                        //   delay: Duration(milliseconds: 800),
+                        //   duration: Duration(milliseconds: 500),
+                        //   child: Align(
+                        //     alignment: Alignment.centerRight,
+                        //     child: TextButton(
+                        //       onPressed: () {
+                        //         // Add forgot password functionality
+                        //       },
+                        //       child: Text(
+                        //         'Forgot Password?',
+                        //         style: TextStyle(color: Colors.green[800]),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(height: 20),
                         FadeInDown(
                           delay: Duration(milliseconds: 1000),
                           duration: Duration(milliseconds: 500),
@@ -170,13 +181,14 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green[800],
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               minimumSize: Size(double.infinity, 50),
                             ),
                             child: Text(
-                              'Login',
+                              'Admin Login',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -187,28 +199,22 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  Spacer(),
+                  SizedBox(height: 20),
+                  // Add warning message here
                   FadeInUp(
                     duration: Duration(milliseconds: 500),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Don't have an account? "),
-                        TextButton(
-                          onPressed: () {
-                            // Add navigation to signup page
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.green[800],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'This is a restricted area. Only authorized administrators can access.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.red[700],
+                        fontSize: 12,
+                      ),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  Spacer(),
+                  
                 ],
               ),
             ),

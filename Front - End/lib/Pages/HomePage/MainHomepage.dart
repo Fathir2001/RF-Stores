@@ -385,15 +385,15 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _buildEnhancedCategoryCard(
+    Widget _buildEnhancedCategoryCard(
       BuildContext context, String title, IconData icon, Widget page) {
     return Container(
-      width: 110,
-      margin: EdgeInsets.only(right: 15),
+      width: 120, // Decreased from 140
+      margin: EdgeInsets.only(right: 15), // Decreased from 20
       child: Material(
-        elevation: 8,
+        elevation: 8, // Decreased from 10
         shadowColor: Colors.green.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
         child: InkWell(
           onTap: () {
             Navigator.push(
@@ -401,30 +401,61 @@ class HomeContent extends StatelessWidget {
               MaterialPageRoute(builder: (context) => page),
             );
           },
-          borderRadius: BorderRadius.circular(15),
-          child: Container(
-            padding: EdgeInsets.all(15),
+          borderRadius: BorderRadius.circular(20),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            padding: EdgeInsets.all(12), // Decreased from 15
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.green[300]!, Colors.green[600]!],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
+                colors: title == 'Pantry'
+                    ? [Color(0xFF66BB6A), Color(0xFF1B5E20)]
+                    : title == 'Vegetables'
+                        ? [Color(0xFF26A69A), Color(0xFF004D40)]
+                        : [Color(0xFF42A5F5), Color(0xFF0D47A1)],
               ),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.25),
+                width: 1,
+              ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: 35, color: Colors.white),
-                SizedBox(height: 8),
+                Container(
+                  padding: EdgeInsets.all(10), // Decreased from 15
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 35, // Decreased from 45
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 8), // Decreased from 15
                 Text(
                   title,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 15, // Decreased from 17
+                    letterSpacing: 0.5,
                   ),
                   textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 5), // Decreased from 8
+                Container(
+                  width: 30, // Decreased from 40
+                  height: 2, // Decreased from 3
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ],
             ),
@@ -433,6 +464,7 @@ class HomeContent extends StatelessWidget {
       ),
     );
   }
+
 
   Widget _buildEnhancedProductCard(String name, String price, String oldPrice,
       String discount, String imagePath) {
