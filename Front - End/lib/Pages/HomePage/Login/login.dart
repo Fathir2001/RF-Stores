@@ -3,6 +3,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Admin/admin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -34,7 +35,9 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('token', data['token']);
         
         // Navigate to home page
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => AdminPage()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login failed. Please try again.')),
@@ -107,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                     delay: Duration(milliseconds: 300),
                     duration: Duration(milliseconds: 500),
                     child: Text(
-                      'Authorized Personnel Only',
+                      'Authorized Persons Only',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[600],
