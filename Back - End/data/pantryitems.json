@@ -1,0 +1,33 @@
+[
+    {
+      "name": "Rice",
+      "price": 19.99,
+      "imageUrl": "assets/images/pantry/rice.jpeg"
+    },
+    {
+      "name": "Pasta",
+      "price": 4.99,
+      "imageUrl": "assets/Images/pantry/pasta.jpg"
+    },
+    {
+      "name": "Flour",
+      "price": 3.99,
+      "imageUrl": "assets/Images/pantry/flour.jpg"
+    },
+    {
+      "name": "Sugar",
+      "price": 2.99,
+      "imageUrl": "assets/Images/pantry/sugar.jpeg"
+    },
+    {
+      "name": "Salt",
+      "price": 1.99,
+      "imageUrl": "assets/Images/pantry/salt.jpg"
+    },
+    {
+      "name": "Oats",
+      "price": 7.99,
+      "imageUrl": "assets/Images/pantry/oats.webp"
+    }
+  ]
+  
