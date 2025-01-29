@@ -1,0 +1,33 @@
+[
+    {
+      "name": "Broccoli",
+      "price": 19.99,
+      "imageUrl": "assets/images/vegetables/broccoli.jpg"
+    },
+    {
+      "name": "Carrot",
+      "price": 4.99,
+      "imageUrl": "assets/Images/vegetables/carrot.webp"
+    },
+    {
+      "name": "Garlic",
+      "price": 3.99,
+      "imageUrl": "assets/Images/vegetables/garlic.webp"
+    },
+    {
+      "name": "Leeks",
+      "price": 2.99,
+      "imageUrl": "assets/Images/vegetables/leeks.jpg"
+    },
+    {
+      "name": "Onion",
+      "price": 1.99,
+      "imageUrl": "assets/Images/vegetables/onion.jpg"
+    },
+    {
+      "name": "Potato",
+      "price": 7.99,
+      "imageUrl": "assets/Images/vegetables/potato.jpg"
+    }
+  ]
+  
