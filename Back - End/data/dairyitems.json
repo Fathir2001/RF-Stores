@@ -1,0 +1,33 @@
+[
+    {
+      "name": "Butter",
+      "price": 19.99,
+      "imageUrl": "assets/images/dairy&eggs/butter.jpg"
+    },
+    {
+      "name": "Cheese",
+      "price": 4.99,
+      "imageUrl": "assets/Images/dairy&eggs/cheese.jpg"
+    },
+    {
+      "name": "Egg",
+      "price": 3.99,
+      "imageUrl": "assets/Images/dairy&eggs/eggs.webp"
+    },
+    {
+      "name": "Ghee",
+      "price": 2.99,
+      "imageUrl": "assets/Images/dairy&eggs/ghee.jpeg"
+    },
+    {
+      "name": "Milk",
+      "price": 1.99,
+      "imageUrl": "assets/Images/dairy&eggs/milk.jpeg"
+    },
+    {
+      "name": "Yoghurt",
+      "price": 7.99,
+      "imageUrl": "assets/Images/dairy&eggs/yoghurt.png"
+    }
+  ]
+  
