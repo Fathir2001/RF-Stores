@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require('./routes/Auth');
 const pantryRoutes = require('./routes/pantry');
+const vegetablesRoutes = require('./routes/vegetable');
 
 const app = express();
 
@@ -53,3 +54,4 @@ process.on("unhandledRejection", (err) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/pantry', pantryRoutes);
+app.use('/api/vegetables', vegetablesRoutes);

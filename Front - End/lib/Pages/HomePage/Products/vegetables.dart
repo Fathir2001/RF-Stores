@@ -24,6 +24,7 @@ class _VegetablesPageState extends State<VegetablesPage> with SingleTickerProvid
       vsync: this,
     );
     _controller.forward();
+    Provider.of<VegetablesProvider>(context, listen: false).fetchVegetables();
   }
 
   @override

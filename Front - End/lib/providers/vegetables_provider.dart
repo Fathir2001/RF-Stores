@@ -1,40 +1,29 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../models/vegetables_model.dart';
 
 class VegetablesProvider with ChangeNotifier {
-  final List<VegetableItem> _items = [
-    VegetableItem(
-      name: 'Broccoli',
-      price: 19.99,
-      imageUrl: 'assets/images/vegetables/broccoli.jpg',
-    ),
-    VegetableItem(
-      name: 'Carrot',
-      price: 4.99, 
-      imageUrl: 'assets/Images/vegetables/carrot.webp',
-    ),
-    VegetableItem(
-      name: 'Garlic',
-      price: 3.99,
-      imageUrl: 'assets/Images/vegetables/garlic.webp',
-    ),
-    VegetableItem(
-      name: 'Leeks',
-      price: 2.99,
-      imageUrl: 'assets/Images/vegetables/leeks.jpg',
-    ),
-    VegetableItem(
-      name: 'Onion',
-      price: 1.99,
-      imageUrl: 'assets/Images/vegetables/onion.jpg',
-    ),
-    VegetableItem(
-      name: 'Potato',
-      price: 7.99,
-      imageUrl: 'assets/Images/vegetables/potato.jpg',
-    ),
-  ];
+  List<VegetableItem> _items = [];
 
   List<VegetableItem> get items => [..._items];
-  
+
+  Future<void> fetchVegetables() async {
+    try {
+      final response = await http.get(Uri.parse('http://localhost:5000/api/vegetables'));
+      
+      if (response.statusCode == 200) {
+        final List<dynamic> vegetablesJson = json.decode(response.body);
+        _items = vegetablesJson.map((json) => VegetableItem(
+          name: json['name'],
+          price: json['price'].toDouble(),
+          imageUrl: json['imageUrl'],
+        )).toList();
+        notifyListeners();
+      }
+    } catch (error) {
+      print('Error fetching vegetables: $error');
+      throw error;
+    }
+  }
 }
