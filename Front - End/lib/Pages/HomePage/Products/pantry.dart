@@ -25,6 +25,8 @@ class _PantryPageState extends State<PantryPage>
       vsync: this,
     );
     _controller.forward();
+
+    Provider.of<PantryProvider>(context, listen: false).fetchItems();
   }
 
   @override

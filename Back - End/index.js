@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require('./routes/Auth');
+const pantryRoutes = require('./routes/pantry');
 
 const app = express();
 
@@ -51,3 +52,4 @@ process.on("unhandledRejection", (err) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/pantry', pantryRoutes);
