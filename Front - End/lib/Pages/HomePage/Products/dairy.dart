@@ -25,6 +25,8 @@ class _DairyPageState extends State<DairyPage>
       vsync: this,
     );
     _controller.forward();
+
+    Provider.of<DairyProvider>(context, listen: false).fetchDairyItems();
   }
 
   @override

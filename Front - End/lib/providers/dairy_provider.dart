@@ -1,39 +1,29 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../models/dairy_model.dart';
 
 class DairyProvider with ChangeNotifier {
-  final List<DairyItem> _items = [
-    DairyItem(
-      name: 'Butter',
-      price: 19.99,
-      imageUrl: 'assets/images/dairy&eggs/butter.jpg',
-    ),
-    DairyItem(
-      name: 'Cheese',
-      price: 4.99, 
-      imageUrl: 'assets/Images/dairy&eggs/cheese.jpg',
-    ),
-    DairyItem(
-      name: 'Egg',
-      price: 3.99,
-      imageUrl: 'assets/Images/dairy&eggs/eggs.webp',
-    ),
-    DairyItem(
-      name: 'Ghee',
-      price: 2.99,
-      imageUrl: 'assets/Images/dairy&eggs/ghee.jpeg',
-    ),
-    DairyItem(
-      name: 'Milk',
-      price: 1.99,
-      imageUrl: 'assets/Images/dairy&eggs/milk.jpeg',
-    ),
-    DairyItem(
-      name: 'Yoghurt',
-      price: 7.99,
-      imageUrl: 'assets/Images/dairy&eggs/yoghurt.png',
-    ),
-  ];
+  List<DairyItem> _items = [];
 
   List<DairyItem> get items => [..._items];
+
+  Future<void> fetchDairyItems() async {
+    try {
+      final response = await http.get(Uri.parse('http://localhost:5000/api/dairy'));
+      
+      if (response.statusCode == 200) {
+        final List<dynamic> dairyJson = json.decode(response.body);
+        _items = dairyJson.map((json) => DairyItem(
+          name: json['name'],
+          price: json['price'].toDouble(),
+          imageUrl: json['imageUrl'],
+        )).toList();
+        notifyListeners();
+      }
+    } catch (error) {
+      print('Error fetching dairy items: $error');
+      throw error;
+    }
+  }
 }
