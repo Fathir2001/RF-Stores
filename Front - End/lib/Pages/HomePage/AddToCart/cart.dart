@@ -12,7 +12,8 @@ class CartPage extends StatefulWidget {
   State<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> with SingleTickerProviderStateMixin {
+class _CartPageState extends State<CartPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -120,10 +121,12 @@ class _CartPageState extends State<CartPage> with SingleTickerProviderStateMixin
                           const SizedBox(height: 16),
                           Text(
                             'Your cart is empty',
-                            style:
-                                Theme.of(context).textTheme.titleLarge?.copyWith(
-                                      color: Colors.grey[600],
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Colors.grey[600],
+                                ),
                           ),
                         ],
                       ),
@@ -159,8 +162,61 @@ class _CartPageState extends State<CartPage> with SingleTickerProviderStateMixin
                                   motion: const ScrollMotion(),
                                   children: [
                                     SlidableAction(
-                                      onPressed: (_) =>
-                                          cartProvider.removeItem(cartItem.id),
+                                      onPressed: (_) async {
+                                        final bool? confirm =
+                                            await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text('Remove Item'),
+                                            content: Text(
+                                                'Are you sure you want to remove this item from cart?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(false),
+                                                child: Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(true),
+                                                child: Text(
+                                                  'Remove',
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (confirm == true) {
+                                          try {
+                                            await cartProvider
+                                                .removeItem(cartItem.id);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Item removed from cart'),
+                                                backgroundColor: Colors.green,
+                                                duration: Duration(seconds: 2),
+                                              ),
+                                            );
+                                          } catch (error) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Failed to remove item from cart'),
+                                                backgroundColor: Colors.red,
+                                                duration: Duration(seconds: 2),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
                                       backgroundColor: Colors.red,
                                       foregroundColor: Colors.white,
                                       icon: Icons.delete,
@@ -232,11 +288,9 @@ class _CartPageState extends State<CartPage> with SingleTickerProviderStateMixin
                                           child: Row(
                                             children: [
                                               IconButton(
-                                                icon:
-                                                    const Icon(Icons.remove),
+                                                icon: const Icon(Icons.remove),
                                                 onPressed: () =>
-                                                    cartProvider
-                                                        .updateQuantity(
+                                                    cartProvider.updateQuantity(
                                                   cartItem.id,
                                                   cartItem.quantity - 1,
                                                 ),
@@ -251,8 +305,7 @@ class _CartPageState extends State<CartPage> with SingleTickerProviderStateMixin
                                               IconButton(
                                                 icon: const Icon(Icons.add),
                                                 onPressed: () =>
-                                                    cartProvider
-                                                        .updateQuantity(
+                                                    cartProvider.updateQuantity(
                                                   cartItem.id,
                                                   cartItem.quantity + 1,
                                                 ),
@@ -324,8 +377,7 @@ class _CartPageState extends State<CartPage> with SingleTickerProviderStateMixin
                                     },
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                       ),
                                     ),
                                     child: const Text(

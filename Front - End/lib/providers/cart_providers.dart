@@ -23,11 +23,11 @@ class CartProvider with ChangeNotifier {
   Future<void> fetchCartItems() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/$userId'));
-      
+
       if (response.statusCode == 200) {
         final List<dynamic> cartData = json.decode(response.body);
         _items.clear();
-        
+
         for (var item in cartData) {
           _items[item['productId']] = CartItem(
             id: item['_id'],
@@ -45,7 +45,8 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addItem(String id, String name, double price, String imageUrl) async {
+  Future<void> addItem(
+      String id, String name, double price, String imageUrl) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/add'),
@@ -72,10 +73,13 @@ class CartProvider with ChangeNotifier {
   Future<void> removeItem(String id) async {
     try {
       final response = await http.delete(Uri.parse('$baseUrl/remove/$id'));
-      
+
       if (response.statusCode == 200) {
-        _items.remove(id);
+        // Find and remove the item using MongoDB _id
+        _items.removeWhere((key, item) => item.id == id);
         notifyListeners();
+      } else {
+        throw Exception('Failed to remove item from cart');
       }
     } catch (error) {
       print('Error removing item from cart: $error');
@@ -103,7 +107,7 @@ class CartProvider with ChangeNotifier {
   Future<void> clear() async {
     try {
       final response = await http.delete(Uri.parse('$baseUrl/clear/$userId'));
-      
+
       if (response.statusCode == 200) {
         _items.clear();
         notifyListeners();
