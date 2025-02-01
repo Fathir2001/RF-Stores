@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'manageInventory.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -44,7 +45,10 @@ class _AdminPageState extends State<AdminPage> {
               icon: Icons.inventory,
               title: 'Manage Inventory',
               onTap: () {
-                // Navigate to inventory management
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManageInventoryPage()),
+                );
               },
             ),
             _buildMenuItem(

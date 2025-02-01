@@ -83,6 +83,27 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () => Navigator.pop(context),
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => AdminPage()),
+                            );
+                          },
+                          child: Text(
+                            'Skip',
+                            style: TextStyle(
+                              color: Colors.green[800],
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     FadeInDown(
                       duration: Duration(milliseconds: 500),
                       child: Hero(
