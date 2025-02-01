@@ -209,7 +209,9 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
             color: const Color.fromARGB(255, 118, 198, 122),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: Colors.white,
+              indicatorColor: Colors.black,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.black,
               tabs: [
                 Tab(text: 'Pantry Items'),
                 Tab(text: 'Vegetables'),
