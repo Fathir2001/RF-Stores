@@ -7,7 +7,12 @@ import './providers/vegetables_provider.dart';
 import './providers/dairy_provider.dart';
 import './providers/cart_providers.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  final cartProvider = CartProvider();
+  await cartProvider.clear();
+  
   runApp(
     MultiProvider(
       providers: [
