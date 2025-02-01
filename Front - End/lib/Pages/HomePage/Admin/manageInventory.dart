@@ -202,22 +202,31 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
       appBar: AppBar(
         title: Text('Manage Inventory'),
         backgroundColor: Colors.green[800],
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          tabs: [
-            Tab(text: 'Pantry Items'),
-            Tab(text: 'Vegetables'),
-            Tab(text: 'Dairy Items'),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-          _buildPantryGrid(), // Real pantry items
-          _buildVegetablesGrid(), // Placeholder for vegetables
-          _buildDairyGrid(), // Placeholder for dairy items
+          Container(
+            color: const Color.fromARGB(255, 118, 198, 122),
+            child: TabBar(
+              controller: _tabController,
+              indicatorColor: Colors.white,
+              tabs: [
+                Tab(text: 'Pantry Items'),
+                Tab(text: 'Vegetables'),
+                Tab(text: 'Dairy Items'),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildPantryGrid(), // Real pantry items
+                _buildVegetablesGrid(), // Placeholder for vegetables
+                _buildDairyGrid(), // Placeholder for dairy items
+              ],
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
