@@ -29,6 +29,29 @@ class _OrdersPageState extends State<OrdersPage>
     super.dispose();
   }
 
+  void _showDeleteConfirmation(String orderId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Delete Order'),
+        content: Text('Are you sure you want to delete this order?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _deleteOrder(orderId);
+            },
+            child: Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _fetchOrders() async {
     try {
       setState(() {
@@ -90,6 +113,28 @@ class _OrdersPageState extends State<OrdersPage>
     }
   }
 
+  Future<void> _deleteOrder(String orderId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://localhost:5000/api/customers/orders/$orderId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        await _fetchOrders();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Order deleted successfully')),
+        );
+      } else {
+        throw Exception('Failed to delete order');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
   Widget _buildOrdersList({required bool isPending}) {
     if (_isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -130,13 +175,23 @@ class _OrdersPageState extends State<OrdersPage>
               title: Text('Order #${order['_id'].toString().substring(0, 8)}'),
               subtitle: Text('${order['name']} - \$${order['totalAmount']}'),
               trailing: isPending
-                  ? ElevatedButton(
-                      onPressed: () => _markOrderAsComplete(order['_id']),
-                      child: Text('Mark Complete'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
-                      ),
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () =>
+                              _showDeleteConfirmation(order['_id']),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => _markOrderAsComplete(order['_id']),
+                          child: Text('Mark Complete'),
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.green,
+                          ),
+                        ),
+                      ],
                     )
                   : Icon(Icons.check_circle, color: Colors.green),
               onTap: () => _showOrderDetails(order),
@@ -193,38 +248,38 @@ class _OrdersPageState extends State<OrdersPage>
         centerTitle: true,
         title: Column(
           children: [
-        Shimmer.fromColors(
-          baseColor: const Color.fromARGB(255, 41, 133, 44),
-          highlightColor: const Color.fromARGB(255, 146, 243, 196),
-          period: Duration(seconds: 2),
-          child: Text(
-            'ORDERS',
-            style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 2,
+            Shimmer.fromColors(
+              baseColor: const Color.fromARGB(255, 41, 133, 44),
+              highlightColor: const Color.fromARGB(255, 146, 243, 196),
+              period: Duration(seconds: 2),
+              child: Text(
+                'ORDERS',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+              ),
             ),
-          ),
-        ),
-        Shimmer.fromColors(
-          baseColor: const Color.fromARGB(255, 41, 133, 44),
-          highlightColor: const Color.fromARGB(255, 146, 243, 196),
-          period: Duration(seconds: 2),
-          child: Container(
-            height: 2,
-            width: 100,
-            color: Colors.green,
-            margin: EdgeInsets.only(top: 4),
-          ),
-        ),
+            Shimmer.fromColors(
+              baseColor: const Color.fromARGB(255, 41, 133, 44),
+              highlightColor: const Color.fromARGB(255, 146, 243, 196),
+              period: Duration(seconds: 2),
+              child: Container(
+                height: 2,
+                width: 100,
+                color: Colors.green,
+                margin: EdgeInsets.only(top: 4),
+              ),
+            ),
           ],
         ),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.black,
           tabs: [
-        Tab(text: 'Pending Orders'),
-        Tab(text: 'Completed Orders'),
+            Tab(text: 'Pending Orders'),
+            Tab(text: 'Completed Orders'),
           ],
         ),
       ),
