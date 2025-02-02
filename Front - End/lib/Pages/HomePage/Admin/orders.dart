@@ -140,13 +140,16 @@ class _OrdersPageState extends State<OrdersPage>
                 ],
               ),
               trailing: isPending
-                  ? ElevatedButton(
+                    ? ElevatedButton(
                       onPressed: () {
-                        // Handle mark as complete
+                      // Handle mark as complete
                       },
-                      child: Text('Mark Complete'),
+                      child: Text(
+                      'Mark Complete',
+                      style: TextStyle(color: Colors.white),
+                      ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[800],
+                      backgroundColor: Colors.green[800],
                       ),
                     )
                   : Icon(Icons.check_circle, color: Colors.green[800]),
