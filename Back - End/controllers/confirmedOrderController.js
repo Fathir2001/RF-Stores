@@ -127,3 +127,30 @@ exports.getOrderCount = async (req, res) => {
     });
   }
 };
+
+exports.getTotalQuantity = async (req, res) => {
+  try {
+    const result = await ConfirmedOrder.aggregate([
+      { $unwind: "$orders" },
+      {
+        $group: {
+          _id: null,
+          totalQuantity: { $sum: "$orders.quantity" }
+        }
+      }
+    ]);
+
+    const totalQuantity = result.length > 0 ? result[0].totalQuantity : 0;
+
+    res.status(200).json({
+      success: true,
+      data: { totalQuantity }
+    });
+  } catch (error) {
+    console.error("Error calculating total quantity:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};

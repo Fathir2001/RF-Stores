@@ -44,6 +44,23 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     }
   }
 
+  Future<int> fetchTotalQuantity() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:5000/api/customers/total-quantity'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data']['totalQuantity'];
+      } else {
+        throw Exception('Failed to load total quantity');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,18 +209,39 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                           );
                         },
                       ),
-                      _buildAnalyticCard(
-                        'Orders',
-                        '48',
-                        Icons.shopping_cart,
-                        Colors.orange,
+                      FutureBuilder<int>(
+                        future: fetchTotalQuantity(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return _buildAnalyticCard(
+                              'Orders',
+                              'Loading...',
+                              Icons.shopping_cart,
+                              Colors.orange,
+                            );
+                          } else if (snapshot.hasError) {
+                            return _buildAnalyticCard(
+                              'Orders',
+                              'Error',
+                              Icons.shopping_cart,
+                              Colors.orange,
+                            );
+                          }
+                          return _buildAnalyticCard(
+                            'Orders',
+                            '${snapshot.data ?? 0}',
+                            Icons.shopping_cart,
+                            Colors.orange,
+                          );
+                        },
                       ),
-                      _buildAnalyticCard(
-                        'Products',
-                        '96',
-                        Icons.inventory,
-                        Colors.purple,
-                      ),
+                      // _buildAnalyticCard(
+                      //   'Products',
+                      //   '96',
+                      //   Icons.inventory,
+                      //   Colors.purple,
+                      // ),
                     ],
                   ),
                 ],
