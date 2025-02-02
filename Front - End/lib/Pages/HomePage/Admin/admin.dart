@@ -6,6 +6,7 @@ import 'manageInventory.dart';
 import 'orders.dart';
 import '../MainHomepage.dart';
 import 'customers.dart';
+import 'analytics.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -224,9 +225,11 @@ class _AdminPageState extends State<AdminPage> {
                           icon: Icons.analytics,
                           title: 'Analytics',
                           color: Colors.purple,
-                          onTap: () {
-                            // Navigate to analytics
-                          },
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AnalyticsPage()),
+                          ),
                         ),
                       ),
                     ],
@@ -257,60 +260,59 @@ class _AdminPageState extends State<AdminPage> {
     MaterialColor materialColor = getMaterialColor(color);
 
     return Material(
-    elevation: 6, // Reduced from 8
-    shadowColor: color.withOpacity(0.3),
-    borderRadius: BorderRadius.circular(15), // Reduced from 20
-    child: InkWell(
-      onTap: onTap,
+      elevation: 6, // Reduced from 8
+      shadowColor: color.withOpacity(0.3),
       borderRadius: BorderRadius.circular(15), // Reduced from 20
-      child: Container(
-        padding: EdgeInsets.all(10), // Reduced from 15
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              materialColor.shade300,
-              materialColor.shade700,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(15), // Reduced from 20
+        child: Container(
+          padding: EdgeInsets.all(10), // Reduced from 15
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                materialColor.shade300,
+                materialColor.shade700,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(15), // Reduced from 20
+            border: Border.all(
+              color: Colors.white.withOpacity(0.25),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8), // Reduced from 12
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12), // Reduced from 15
+                ),
+                child: Icon(
+                  icon,
+                  size: 32, // Reduced from 40
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 8), // Reduced from 12
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14, // Reduced from 16
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
-          borderRadius: BorderRadius.circular(15), // Reduced from 20
-          border: Border.all(
-            color: Colors.white.withOpacity(0.25),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(8), // Reduced from 12
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12), // Reduced from 15
-              ),
-              child: Icon(
-                icon,
-                size: 32, // Reduced from 40
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 8), // Reduced from 12
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14, // Reduced from 16
-                letterSpacing: 0.5,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
         ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-
