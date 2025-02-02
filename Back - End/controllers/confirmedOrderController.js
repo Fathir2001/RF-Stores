@@ -111,3 +111,19 @@ exports.getTotalSales = async (req, res) => {
     });
   }
 };
+
+exports.getOrderCount = async (req, res) => {
+  try {
+    const count = await ConfirmedOrder.countDocuments();
+    res.status(200).json({
+      success: true,
+      data: { count }
+    });
+  } catch (error) {
+    console.error("Error getting order count:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};

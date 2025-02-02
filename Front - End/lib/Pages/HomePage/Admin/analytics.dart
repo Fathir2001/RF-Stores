@@ -27,6 +27,23 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     }
   }
 
+  Future<int> fetchOrderCount() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:5000/api/customers/order-count'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data']['count'];
+      } else {
+        throw Exception('Failed to load order count');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +108,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               ),
             ),
           ),
-          
+
           // Content
           Expanded(
             child: SingleChildScrollView(
@@ -112,7 +129,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  
+
                   // Analytics Cards
                   GridView.count(
                     shrinkWrap: true,
@@ -124,7 +141,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                       FutureBuilder<double>(
                         future: fetchTotalSales(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return _buildAnalyticCard(
                               'Total Sales',
                               'Loading...',
@@ -141,22 +159,43 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                           }
                           return _buildAnalyticCard(
                             'Total Sales',
-                            '₱${snapshot.data?.toStringAsFixed(2) ?? '0.00'}',
+                            '${snapshot.data?.toStringAsFixed(2) ?? '0.00'}',
                             Icons.attach_money,
                             Colors.green,
                           );
                         },
                       ),
-                      _buildAnalyticCard(
-                        'Orders',
-                        '125',
-                        Icons.shopping_cart,
-                        Colors.blue,
+                      FutureBuilder<int>(
+                        future: fetchOrderCount(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return _buildAnalyticCard(
+                              'Customers',
+                              'Loading...',
+                              Icons.people,
+                              Colors.blue,
+                            );
+                          } else if (snapshot.hasError) {
+                            return _buildAnalyticCard(
+                              'Customers',
+                              'Error',
+                              Icons.people,
+                              Colors.blue,
+                            );
+                          }
+                          return _buildAnalyticCard(
+                            'Customers',
+                            '${snapshot.data ?? 0}',
+                            Icons.people,
+                            Colors.blue,
+                          );
+                        },
                       ),
                       _buildAnalyticCard(
-                        'Customers',
+                        'Orders',
                         '48',
-                        Icons.people,
+                        Icons.shopping_cart,
                         Colors.orange,
                       ),
                       _buildAnalyticCard(
@@ -176,7 +215,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     );
   }
 
-  Widget _buildAnalyticCard(String title, String value, IconData icon, MaterialColor color) {
+  Widget _buildAnalyticCard(
+      String title, String value, IconData icon, MaterialColor color) {
     return FadeInUp(
       duration: Duration(milliseconds: 500),
       child: Container(
