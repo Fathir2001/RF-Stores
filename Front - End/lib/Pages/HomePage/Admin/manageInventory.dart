@@ -29,6 +29,57 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
     super.dispose();
   }
 
+  Future<void> _editPrice(
+      BuildContext context, dynamic item, String type) async {
+    final TextEditingController priceController = TextEditingController(
+      text: item.price.toString(),
+    );
+
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Edit Price'),
+        content: TextField(
+          controller: priceController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: 'New Price',
+            prefixText: '\$',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              double? newPrice = double.tryParse(priceController.text);
+              if (newPrice != null) {
+                switch (type) {
+                  case 'pantry':
+                    Provider.of<PantryProvider>(context, listen: false)
+                        .updatePrice(item.id, newPrice);
+                    break;
+                  case 'vegetables':
+                    Provider.of<VegetablesProvider>(context, listen: false)
+                        .updatePrice(item.id, newPrice);
+                    break;
+                  case 'dairy':
+                    Provider.of<DairyProvider>(context, listen: false)
+                        .updatePrice(item.id, newPrice);
+                    break;
+                }
+                Navigator.pop(context);
+              }
+            },
+            child: Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPantryGrid() {
     return Consumer<PantryProvider>(
       builder: (context, pantryProvider, child) {
@@ -71,7 +122,18 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
                           item.name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('\$${item.price.toStringAsFixed(2)}'),
+                        Row(
+                          children: [
+                            Text('\$${item.price.toStringAsFixed(2)}'),
+                            IconButton(
+                              icon: Icon(Icons.edit, size: 16),
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              onPressed: () =>
+                                  _editPrice(context, item, 'pantry'),
+                            ),
+                          ],
+                        ),
                         // You can add stock information here if available in your model
                         // Text('Stock: ${item.stock}'),
                       ],
@@ -128,7 +190,18 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
                           item.name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('\$${item.price.toStringAsFixed(2)}'),
+                        Row(
+                          children: [
+                            Text('\$${item.price.toStringAsFixed(2)}'),
+                            IconButton(
+                              icon: Icon(Icons.edit, size: 16),
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              onPressed: () =>
+                                  _editPrice(context, item, 'vegetables'),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -183,7 +256,18 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
                           item.name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('\$${item.price.toStringAsFixed(2)}'),
+                        Row(
+                          children: [
+                            Text('\$${item.price.toStringAsFixed(2)}'),
+                            IconButton(
+                              icon: Icon(Icons.edit, size: 16),
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              onPressed: () =>
+                                  _editPrice(context, item, 'dairy'),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

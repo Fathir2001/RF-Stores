@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getVegetables } = require('../controllers/vegetableController');
+const { getVegetables, updatePrice } = require('../controllers/vegetableController');
 
 router.get('/', getVegetables);
+router.put('/:id/price', updatePrice);
 
 module.exports = router;

@@ -9,4 +9,19 @@ const getVegetables = async (req, res) => {
   }
 };
 
-module.exports = { getVegetables };
+const updatePrice = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { price } = req.body;
+    const item = await Vegetable.findByIdAndUpdate(
+      id,
+      { price },
+      { new: true }
+    );
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getVegetables, updatePrice };
