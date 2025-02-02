@@ -9,7 +9,8 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  List<dynamic>? _orders;
+  List<dynamic>? _pendingOrders;
+  List<dynamic>? _confirmedOrders;
   bool _isLoading = true;
   String? _error;
 
@@ -20,38 +21,42 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
     _fetchOrders();
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchOrders() async {
     try {
-      print('Fetching orders...');
       setState(() {
         _isLoading = true;
         _error = null;
       });
 
-      final response = await http.get(
+      final pendingResponse = await http.get(
         Uri.parse('http://localhost:5000/api/customers/orders'),
         headers: {'Content-Type': 'application/json'},
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      final confirmedResponse = await http.get(
+        Uri.parse('http://localhost:5000/api/customers/confirmed-orders'),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        if (responseData['success']) {
-          setState(() {
-            _orders = responseData['data'];
-            _isLoading = false;
-          });
-          print('Orders loaded: ${_orders?.length}');
-        } else {
-          throw Exception('API returned success: false');
-        }
+      if (pendingResponse.statusCode == 200 && confirmedResponse.statusCode == 200) {
+        final pendingData = json.decode(pendingResponse.body);
+        final confirmedData = json.decode(confirmedResponse.body);
+
+        setState(() {
+          _pendingOrders = pendingData['data'];
+          _confirmedOrders = confirmedData['data'];
+          _isLoading = false;
+        });
       } else {
         throw Exception('Failed to load orders');
       }
     } catch (e) {
-      print('Error fetching orders: $e');
       setState(() {
         _error = e.toString();
         _isLoading = false;
@@ -62,57 +67,23 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
   Future<void> _markOrderAsComplete(String orderId) async {
     try {
       final response = await http.put(
-        Uri.parse('http://localhost:5000/api/customers/orders/$orderId/complete'),
+        Uri.parse('http://localhost:5000/api/customers/orders/$orderId/confirm'),
         headers: {'Content-Type': 'application/json'},
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        if (responseData['success']) {
-          await _fetchOrders();
-        } else {
-          throw Exception('Failed to update order status');
-        }
+        await _fetchOrders();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Order marked as complete')),
+        );
       } else {
-        throw Exception('Failed to connect to the server');
+        throw Exception('Failed to update order');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating order: ${e.toString()}')),
+        SnackBar(content: Text('Error: ${e.toString()}')),
       );
     }
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Orders Management'),
-        backgroundColor: Colors.green[800],
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.black,
-          tabs: [
-            Tab(text: 'Pending Orders'),
-            Tab(text: 'Completed Orders'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildOrdersList(isPending: true),
-          _buildOrdersList(isPending: false),
-        ],
-      ),
-    );
   }
 
   Widget _buildOrdersList({required bool isPending}) {
@@ -135,18 +106,11 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
       );
     }
 
-    if (_orders == null || _orders!.isEmpty) {
-      return Center(child: Text('No orders found'));
-    }
+    final orders = isPending ? _pendingOrders : _confirmedOrders;
 
-    final filteredOrders = _orders!.where((order) =>
-      (isPending && order['status'] != 'completed') ||
-      (!isPending && order['status'] == 'completed')
-    ).toList();
-
-    if (filteredOrders.isEmpty) {
+    if (orders == null || orders.isEmpty) {
       return Center(
-        child: Text(isPending ? 'No pending orders' : 'No completed orders')
+        child: Text(isPending ? 'No pending orders' : 'No completed orders'),
       );
     }
 
@@ -154,36 +118,22 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
       onRefresh: _fetchOrders,
       child: ListView.builder(
         padding: EdgeInsets.all(8),
-        itemCount: filteredOrders.length,
+        itemCount: orders.length,
         itemBuilder: (context, index) {
-          final order = filteredOrders[index];
-          final String orderId = order['_id']?.toString().substring(0, 8) ?? 'N/A';
-          final String customerName = order['name'] ?? 'Unknown';
-          final dynamic totalAmount = order['totalAmount'] ?? 0.0;
-
+          final order = orders[index];
           return Card(
-            margin: EdgeInsets.symmetric(vertical: 4),
             child: ListTile(
-              title: Text('Order #$orderId'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Customer: $customerName'),
-                  Text('Total: \$${totalAmount.toString()}'),
-                ],
-              ),
+              title: Text('Order #${order['_id'].toString().substring(0, 8)}'),
+              subtitle: Text('${order['name']} - \$${order['totalAmount']}'),
               trailing: isPending
                   ? ElevatedButton(
                       onPressed: () => _markOrderAsComplete(order['_id']),
-                      child: Text(
-                        'Mark Complete',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: Text('Mark Complete'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[800],
+                        foregroundColor: Colors.white, backgroundColor: Colors.green,
                       ),
                     )
-                  : Icon(Icons.check_circle, color: Colors.green[800]),
+                  : Icon(Icons.check_circle, color: Colors.green),
               onTap: () => _showOrderDetails(order),
             ),
           );
@@ -208,7 +158,7 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
               Divider(),
               Text('Items:', style: TextStyle(fontWeight: FontWeight.bold)),
               ...(order['orders'] as List).map((item) => Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: EdgeInsets.only(left: 8.0),
                     child: Text(
                       '${item['itemName']} x${item['quantity']} - \$${item['price']}',
                     ),
@@ -226,6 +176,29 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
             onPressed: () => Navigator.pop(context),
             child: Text('Close'),
           ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Orders'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(text: 'Pending Orders'),
+            Tab(text: 'Completed Orders'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildOrdersList(isPending: true),
+          _buildOrdersList(isPending: false),
         ],
       ),
     );

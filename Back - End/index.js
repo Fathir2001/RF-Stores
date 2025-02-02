@@ -7,7 +7,8 @@ const pantryRoutes = require('./routes/pantry');
 const vegetablesRoutes = require('./routes/vegetable');
 const dairyRoutes = require('./routes/dairy');
 const cartRoutes = require('./routes/cart');
-const customerRoutes = require('./routes/customer');
+const customerRoutes = require('./routes/order');
+const confirmedOrderRoutes = require('./routes/confirmedOrder');
 
 const app = express();
 
@@ -66,3 +67,4 @@ app.use('/api/vegetables', vegetablesRoutes);
 app.use('/api/dairy', dairyRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/customers', customerRoutes);
+app.use('/api/customers', confirmedOrderRoutes);

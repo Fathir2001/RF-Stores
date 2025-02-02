@@ -37,7 +37,12 @@ const customerSchema = new mongoose.Schema({
   orderDate: {
     type: Date,
     default: Date.now,
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'completed'],
+    default: 'pending'
   }
 });
 
-module.exports = mongoose.model('Customer', customerSchema);
+module.exports = mongoose.model('Orders', customerSchema);

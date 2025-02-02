@@ -1,9 +1,9 @@
-const Customer = require('../models/Customer');
+const Customer = require("../models/Order");
 
 exports.createOrder = async (req, res) => {
   try {
-    console.log('Received order data:', req.body);
-    console.log('Received orders array:', req.body.orders); // Add this line
+    console.log("Received order data:", req.body);
+    console.log("Received orders array:", req.body.orders); // Add this line
 
     const { name, address, phone, orders, totalAmount } = req.body;
 
@@ -11,40 +11,40 @@ exports.createOrder = async (req, res) => {
     if (!orders || !Array.isArray(orders) || orders.length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'Orders array is required and must not be empty'
+        error: "Orders array is required and must not be empty",
       });
     }
 
     // Validate each order item
-    const validOrders = orders.map(order => ({
+    const validOrders = orders.map((order) => ({
       itemName: order.itemName,
       quantity: order.quantity,
       price: order.price,
-      imageUrl: order.imageUrl
+      imageUrl: order.imageUrl,
     }));
 
     const customer = new Customer({
       name,
-      address, 
+      address,
       phone,
       orders: validOrders, // Use validated orders
-      totalAmount
+      totalAmount,
     });
 
-    console.log('Customer object before save:', customer);
+    console.log("Customer object before save:", customer);
 
     const savedCustomer = await customer.save();
-    console.log('Saved customer:', savedCustomer);
+    console.log("Saved customer:", savedCustomer);
 
     res.status(201).json({
       success: true,
-      data: savedCustomer
+      data: savedCustomer,
     });
   } catch (error) {
-    console.error('Error creating order:', error);
+    console.error("Error creating order:", error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 };
