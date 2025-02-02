@@ -191,25 +191,40 @@ class _OrdersPageState extends State<OrdersPage>
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Shimmer.fromColors(
+        title: Column(
+          children: [
+        Shimmer.fromColors(
           baseColor: const Color.fromARGB(255, 41, 133, 44),
           highlightColor: const Color.fromARGB(255, 146, 243, 196),
           period: Duration(seconds: 2),
           child: Text(
             'ORDERS',
             style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 2,
             ),
           ),
+        ),
+        Shimmer.fromColors(
+          baseColor: const Color.fromARGB(255, 41, 133, 44),
+          highlightColor: const Color.fromARGB(255, 146, 243, 196),
+          period: Duration(seconds: 2),
+          child: Container(
+            height: 2,
+            width: 100,
+            color: Colors.green,
+            margin: EdgeInsets.only(top: 4),
+          ),
+        ),
+          ],
         ),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.black,
           tabs: [
-            Tab(text: 'Pending Orders'),
-            Tab(text: 'Completed Orders'),
+        Tab(text: 'Pending Orders'),
+        Tab(text: 'Completed Orders'),
           ],
         ),
       ),
