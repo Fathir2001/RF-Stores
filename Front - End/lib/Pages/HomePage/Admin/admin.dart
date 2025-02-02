@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'manageInventory.dart';
+import 'orders.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -55,7 +56,10 @@ class _AdminPageState extends State<AdminPage> {
               icon: Icons.shopping_cart,
               title: 'Orders',
               onTap: () {
-                // Navigate to orders
+                Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OrdersPage()),
+    );
               },
             ),
             _buildMenuItem(

@@ -1,5 +1,21 @@
 const mongoose = require('mongoose');
 
+const orderItemSchema = new mongoose.Schema({
+  itemName: {
+    type: String,
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  imageUrl: String
+});
+
 const customerSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -13,12 +29,7 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  orders: [{
-    itemName: String,
-    quantity: Number,
-    price: Number,
-    imageUrl: String
-  }],
+  orders: [orderItemSchema],
   totalAmount: {
     type: Number,
     required: true,

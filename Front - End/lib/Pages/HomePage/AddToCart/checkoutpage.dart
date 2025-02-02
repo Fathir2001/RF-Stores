@@ -13,7 +13,8 @@ class CheckoutPage extends StatefulWidget {
   _CheckoutPageState createState() => _CheckoutPageState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> with SingleTickerProviderStateMixin {
+class _CheckoutPageState extends State<CheckoutPage>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
@@ -49,17 +50,19 @@ class _CheckoutPageState extends State<CheckoutPage> with SingleTickerProviderSt
 
     try {
       final cartProvider = Provider.of<CartProvider>(context, listen: false);
-      
+
       final orderData = {
         'name': _nameController.text,
         'address': _addressController.text,
         'phone': _phoneController.text,
-        'orders': cartProvider.items.values.map((item) => {
-          'itemName': item.name,
-          'quantity': item.quantity,
-          'price': item.price,
-          'imageUrl': item.imageUrl,
-        }).toList(),
+        'orders': cartProvider.items.values
+            .map((item) => {
+                  'itemName': item.name,
+                  'quantity': item.quantity,
+                  'price': item.price,
+                  'imageUrl': item.imageUrl,
+                })
+            .toList(),
         'totalAmount': cartProvider.totalAmount,
       };
 
