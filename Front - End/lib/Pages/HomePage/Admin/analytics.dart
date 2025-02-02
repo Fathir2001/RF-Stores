@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AnalyticsPage extends StatefulWidget {
   @override
@@ -8,6 +10,23 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
+  Future<double> fetchTotalSales() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:5000/api/customers/total-sales'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data']['totalSales'].toDouble();
+      } else {
+        throw Exception('Failed to load total sales');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +86,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 48), // Balance for back button
+                  SizedBox(width: 48),
                 ],
               ),
             ),
@@ -102,11 +121,31 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
                     children: [
-                      _buildAnalyticCard(
-                        'Total Sales',
-                        '₱150,000',
-                        Icons.attach_money,
-                        Colors.green,
+                      FutureBuilder<double>(
+                        future: fetchTotalSales(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return _buildAnalyticCard(
+                              'Total Sales',
+                              'Loading...',
+                              Icons.attach_money,
+                              Colors.green,
+                            );
+                          } else if (snapshot.hasError) {
+                            return _buildAnalyticCard(
+                              'Total Sales',
+                              'Error',
+                              Icons.attach_money,
+                              Colors.green,
+                            );
+                          }
+                          return _buildAnalyticCard(
+                            'Total Sales',
+                            '₱${snapshot.data?.toStringAsFixed(2) ?? '0.00'}',
+                            Icons.attach_money,
+                            Colors.green,
+                          );
+                        },
                       ),
                       _buildAnalyticCard(
                         'Orders',

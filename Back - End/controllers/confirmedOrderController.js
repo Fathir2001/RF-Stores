@@ -84,3 +84,30 @@ exports.deleteConfirmedOrder = async (req, res) => {
     });
   }
 };
+
+
+exports.getTotalSales = async (req, res) => {
+  try {
+    const result = await ConfirmedOrder.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$totalAmount" }
+        }
+      }
+    ]);
+
+    const totalSales = result.length > 0 ? result[0].totalSales : 0;
+
+    res.status(200).json({
+      success: true,
+      data: { totalSales }
+    });
+  } catch (error) {
+    console.error("Error calculating total sales:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
