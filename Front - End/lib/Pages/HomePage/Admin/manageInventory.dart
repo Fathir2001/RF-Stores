@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/HomePage/Admin/addItems.dart';
+// import 'package:flutter_application_1/Pages/HomePage/Admin/addItems.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/pantry_provider.dart';
 import '../../../providers/vegetables_provider.dart';
@@ -321,10 +321,10 @@ class _ManageInventoryPageState extends State<ManageInventoryPage>
         duration: Duration(milliseconds: 500),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddItemPage()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => AddItemPage()),
+            // );
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.green,
