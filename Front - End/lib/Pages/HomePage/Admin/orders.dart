@@ -7,8 +7,7 @@ class OrdersPage extends StatefulWidget {
   _OrdersPageState createState() => _OrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersPage>
-    with SingleTickerProviderStateMixin {
+class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<dynamic>? _orders;
   bool _isLoading = true;
@@ -57,6 +56,30 @@ class _OrdersPageState extends State<OrdersPage>
         _error = e.toString();
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _markOrderAsComplete(String orderId) async {
+    try {
+      final response = await http.put(
+        Uri.parse('http://localhost:5000/api/customers/orders/$orderId/complete'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        if (responseData['success']) {
+          await _fetchOrders();
+        } else {
+          throw Exception('Failed to update order status');
+        }
+      } else {
+        throw Exception('Failed to connect to the server');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating order: ${e.toString()}')),
+      );
     }
   }
 
@@ -116,15 +139,25 @@ class _OrdersPageState extends State<OrdersPage>
       return Center(child: Text('No orders found'));
     }
 
+    final filteredOrders = _orders!.where((order) =>
+      (isPending && order['status'] != 'completed') ||
+      (!isPending && order['status'] == 'completed')
+    ).toList();
+
+    if (filteredOrders.isEmpty) {
+      return Center(
+        child: Text(isPending ? 'No pending orders' : 'No completed orders')
+      );
+    }
+
     return RefreshIndicator(
       onRefresh: _fetchOrders,
       child: ListView.builder(
         padding: EdgeInsets.all(8),
-        itemCount: _orders?.length ?? 0,
+        itemCount: filteredOrders.length,
         itemBuilder: (context, index) {
-          final order = _orders![index];
-          final String orderId =
-              order['_id']?.toString().substring(0, 8) ?? 'N/A';
+          final order = filteredOrders[index];
+          final String orderId = order['_id']?.toString().substring(0, 8) ?? 'N/A';
           final String customerName = order['name'] ?? 'Unknown';
           final dynamic totalAmount = order['totalAmount'] ?? 0.0;
 
@@ -140,16 +173,14 @@ class _OrdersPageState extends State<OrdersPage>
                 ],
               ),
               trailing: isPending
-                    ? ElevatedButton(
-                      onPressed: () {
-                      // Handle mark as complete
-                      },
+                  ? ElevatedButton(
+                      onPressed: () => _markOrderAsComplete(order['_id']),
                       child: Text(
-                      'Mark Complete',
-                      style: TextStyle(color: Colors.white),
+                        'Mark Complete',
+                        style: TextStyle(color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[800],
+                        backgroundColor: Colors.green[800],
                       ),
                     )
                   : Icon(Icons.check_circle, color: Colors.green[800]),
