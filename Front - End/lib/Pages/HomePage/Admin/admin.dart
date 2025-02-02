@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'manageInventory.dart';
 import 'orders.dart';
 import '../MainHomepage.dart';
+import 'customers.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -117,7 +118,10 @@ class _AdminPageState extends State<AdminPage> {
               icon: Icons.people,
               title: 'Customers',
               onTap: () {
-                // Navigate to customers
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CustomersPage()),
+                );
               },
             ),
             _buildMenuItem(
