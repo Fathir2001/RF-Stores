@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'manageInventory.dart';
 import 'orders.dart';
+import '../MainHomepage.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -9,10 +10,60 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    Navigator.pushReplacementNamed(context, '/login');
+  Future<void> _showLogoutDialog() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            'Logout Confirmation',
+            style: TextStyle(
+              color: Colors.green[800],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to logout?',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                'No',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 16,
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                  color: Colors.green[800],
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('token');
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainHomePage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -24,7 +75,7 @@ class _AdminPageState extends State<AdminPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: _logout,
+            onPressed: _showLogoutDialog,
           ),
         ],
       ),
@@ -57,9 +108,9 @@ class _AdminPageState extends State<AdminPage> {
               title: 'Orders',
               onTap: () {
                 Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => OrdersPage()),
-    );
+                  context,
+                  MaterialPageRoute(builder: (context) => OrdersPage()),
+                );
               },
             ),
             _buildMenuItem(
