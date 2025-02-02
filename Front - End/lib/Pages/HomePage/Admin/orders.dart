@@ -206,6 +206,7 @@ class _OrdersPageState extends State<OrdersPage>
         ),
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Colors.black,
           tabs: [
             Tab(text: 'Pending Orders'),
             Tab(text: 'Completed Orders'),
