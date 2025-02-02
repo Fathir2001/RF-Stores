@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shimmer/shimmer.dart';
 
 class OrdersPage extends StatefulWidget {
   @override
   _OrdersPageState createState() => _OrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateMixin {
+class _OrdersPageState extends State<OrdersPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<dynamic>? _pendingOrders;
   List<dynamic>? _confirmedOrders;
@@ -44,7 +46,8 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (pendingResponse.statusCode == 200 && confirmedResponse.statusCode == 200) {
+      if (pendingResponse.statusCode == 200 &&
+          confirmedResponse.statusCode == 200) {
         final pendingData = json.decode(pendingResponse.body);
         final confirmedData = json.decode(confirmedResponse.body);
 
@@ -67,7 +70,8 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
   Future<void> _markOrderAsComplete(String orderId) async {
     try {
       final response = await http.put(
-        Uri.parse('http://localhost:5000/api/customers/orders/$orderId/confirm'),
+        Uri.parse(
+            'http://localhost:5000/api/customers/orders/$orderId/confirm'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -130,7 +134,8 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
                       onPressed: () => _markOrderAsComplete(order['_id']),
                       child: Text('Mark Complete'),
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white, backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green,
                       ),
                     )
                   : Icon(Icons.check_circle, color: Colors.green),
@@ -185,7 +190,20 @@ class _OrdersPageState extends State<OrdersPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orders'),
+        centerTitle: true,
+        title: Shimmer.fromColors(
+          baseColor: const Color.fromARGB(255, 41, 133, 44),
+          highlightColor: const Color.fromARGB(255, 146, 243, 196),
+          period: Duration(seconds: 2),
+          child: Text(
+            'ORDERS',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+          ),
+        ),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
